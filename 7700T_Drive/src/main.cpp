@@ -15,6 +15,9 @@ using namespace vex;
 competition Competition;
 brain Brain;
 controller Controller1;
+float pi = 3.14;
+float gr = 0.43;
+float Dia = 4.0;
 
 // define your global instances of motors and other devices here
 motor LM = motor(PORT1, ratio6_1, false);
@@ -101,6 +104,22 @@ void display(){
   }
   else
   Brain.Screen.printAt(5, YOFFSET + 91, "RightBack Problem");
+}
+
+void PinchDrive(float target){
+  LM.setPosition(0, rev);
+  float x = pi*LM.position(rev)*gr*Dia;
+  float error = target - x;
+  float kp = 3.0;
+  float speed = kp*error;
+  float accuracy = 0.5;
+  while(fabs(error) > accuracy){
+    time_drive(speed, speed, 25);
+    x = pi*LM.position(rev)*gr*Dia;
+    error = target - x;
+    speed = kp*error;
+  }
+  stopDrive();
 }
 
 /*---------------------------------------------------------------------------*/
