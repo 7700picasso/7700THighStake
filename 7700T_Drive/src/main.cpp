@@ -1,15 +1,14 @@
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*    Module:       main.cpp                                                  */
-/*    Author:       student                                                   */
-/*    Created:      9/13/2024, 5:21:29 PM                                     */
+/*    Author:       7700T                                                     */
+/*    Created:      9/12/2024, 6:27:17 PM                                     */
 /*    Description:  V5 project                                                */
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 
-// #include "vex.h"
-
 #include "vex.h"
+
 using namespace vex;
 
 // A global instance of competition
@@ -18,10 +17,10 @@ brain Brain;
 controller Controller1;
 
 // define your global instances of motors and other devices here
-motor LM = (PORT1, ratio6_1, false);
-motor RM = (PORT2, ratio6_1, true);
-motor LB = (PORT3, ratio6_1, false);
-motor RB = (PORT4, ratio6_1, true);
+motor LM = motor(PORT1, ratio6_1, false);
+motor RM = motor(PORT10, ratio6_1, true);
+motor LB = motor(PORT11, ratio6_1, false);
+motor RB = motor(PORT20, ratio6_1, true);
 
 /*---------------------------------------------------------------------------*/
 /*                          Pre-Autonomous Functions                         */
@@ -39,6 +38,69 @@ void time_drive(int lspeed, int rspeed, float wt){
   LM.spin(fwd, lspeed, pct);
   RM.spin(fwd, rspeed, pct);
   wait(wt, msec);
+}
+
+double YOFFSET = 20;
+void MotorDisplay(double y, double current, double temp){
+  Brain.Screen.setFillColor(transparent);
+  Brain.Screen.printAt(5, YOFFSET + y, "Current: %0.1fA", current);
+  if(current < 1)
+    Brain.Screen.setFillColor(green);
+    else if(current >= 1 && current <= 2.5)
+      Brain.Screen.setFillColor(yellow);
+      else
+      Brain.Screen.setFillColor(red);
+      Brain.Screen.drawRectangle(140, YOFFSET + y -15, 15, 15);
+
+      Brain.Screen.setFillColor(transparent);
+      Brain.Screen.printAt(160, YOFFSET + y, "Temp: %0.1fC", temp);
+      if(temp < 45)
+      Brain.Screen.setFillColor(green);
+      else if(temp <= 50 && temp >= 45)
+      Brain.Screen.setFillColor(yellow);
+      else
+      Brain.Screen.setFillColor(red);
+      Brain.Screen.drawRectangle(275, YOFFSET + y - 15, 15, 15);
+      Brain.Screen.setFillColor(transparent);
+}
+
+void display(){
+  double LMCurrent = LM.current(amp);
+  double LMTemp = LM.temperature(celsius);
+  double LBCurrent = LB.current(amp);
+  double LBTemp = LB.temperature(celsius);
+  double RMCurrent = RM.current(amp);
+  double RMTemp = RM.temperature(celsius);
+  double RBCurrent = RB.current(amp);
+  double RBTemp = RB.temperature(celsius);
+
+  if(LM.installed()){
+    MotorDisplay(1, LMCurrent, LMTemp);
+    Brain.Screen.printAt(300, YOFFSET + 1, "LeftFront");
+  }
+  else
+  Brain.Screen.printAt(5, YOFFSET + 1, "LeftFront Problem");
+
+  if(LB.installed()){
+    MotorDisplay(31, LBCurrent, LBTemp);
+    Brain.Screen.printAt(300, YOFFSET + 31, "LeftBack");
+  }
+  else
+  Brain.Screen.printAt(5, YOFFSET + 31, "LeftBack Problem");
+
+  if(RM.installed()){
+    MotorDisplay(61, RMCurrent, RMTemp);
+    Brain.Screen.printAt(300, YOFFSET + 61, "RightFront");
+  }
+  else
+  Brain.Screen.printAt(5, YOFFSET + 61, "RightFront Problem");
+
+  if(RB.installed()){
+    MotorDisplay(91, RBCurrent, RBTemp);
+    Brain.Screen.printAt(300, YOFFSET + 91, "RightBack");
+  }
+  else
+  Brain.Screen.printAt(5, YOFFSET + 91, "RightBack Problem");
 }
 
 /*---------------------------------------------------------------------------*/
@@ -79,13 +141,15 @@ void usercontrol(void) {
   // User control code here, inside the loop
   while (1) {
 
-      int rspeed = Controller1.Axis2.position(pct);
-      int lspeed = Controller1.Axis3.position(pct);
+      display();
 
-      time_drive(lspeed, rspeed, 10);
+      int LeftJoystick = Controller1.Axis3.position(pct);
+      int RightJoystick = Controller1.Axis1.position(pct);
+
+      time_drive(LeftJoystick + RightJoystick, LeftJoystick - RightJoystick, 10);
 
     wait(20, msec); // Sleep the task for a short amount of time to
-                    // prevent wasted resources.
+                    // prevent wasted resources
   }
 }
 

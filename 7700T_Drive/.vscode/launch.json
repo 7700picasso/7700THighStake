@@ -5,17 +5,23 @@
     "version": "0.2.0",
     "configurations": [
         {
+            "name": "(lldb) Attach",
+            "type": "cppdbg",
+            "request": "attach",
+            "program": "${workspaceRoot}/a.out",
+            "MIMode": "lldb"
+        },
+        {
             "name": "(lldb) Launch",
             "type": "cppdbg",
             "request": "launch",
-            "program": "${7700T_DriveCode}/a.out",
+            "program": "${workspaceRoot}/a.out",
             "args": [],
             "stopAtEntry": false,
-            "cwd": "${main.cpp}",
+            "cwd": "${fileDirname}",
             "environment": [],
             "externalConsole": false,
             "MIMode": "lldb"
         }
-
     ]
 }
