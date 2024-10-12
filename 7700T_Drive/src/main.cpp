@@ -20,10 +20,13 @@ float gr = 0.43;
 float Dia = 4.0;
 
 // define your global instances of motors and other devices here
-motor LM = motor(PORT1, ratio6_1, false);
-motor RM = motor(PORT10, ratio6_1, true);
-motor LB = motor(PORT11, ratio6_1, false);
-motor RB = motor(PORT20, ratio6_1, true);
+motor LM = motor(PORT10, ratio6_1, false);
+motor RM = motor(PORT20, ratio6_1, true);
+motor LB = motor(PORT7, ratio6_1, false);
+motor RB = motor(PORT1, ratio6_1, true);
+motor intake = motor(PORT16, ratio18_1, true);
+motor conveyorBelt = motor(PORT12, ratio18_1, true);
+digital_out clamp1(Brain.ThreeWirePort.A);
 
 /*---------------------------------------------------------------------------*/
 /*                          Pre-Autonomous Functions                         */
@@ -34,6 +37,14 @@ void stopDrive(){
   LM.stop(brake);
   RM.stop(brake);
 }
+
+
+void mogoClamp(){ 
+  clamp1.set(true);
+}
+ void mogoUnclamp() { 
+  clamp1.set(false);
+ }
 
 void time_drive(int lspeed, int rspeed, float wt){
   LB.spin(fwd, lspeed, pct);
@@ -166,6 +177,42 @@ void usercontrol(void) {
       int RightJoystick = Controller1.Axis1.position(pct);
 
       time_drive(LeftJoystick + RightJoystick, LeftJoystick - RightJoystick, 10);
+
+      if(Controller1.ButtonR1.PRESSED){
+        intake.setVelocity(100, pct);
+        intake.spin(fwd);
+        conveyorBelt.setVelocity(100, pct);
+        conveyorBelt.spin(fwd);
+      }
+      else if(Controller1.ButtonR2.PRESSED){
+        intake.setVelocity(100, pct);
+        intake.spin(reverse);
+        conveyorBelt.setVelocity(100, pct);
+        conveyorBelt.spin(reverse);
+      }
+      else if(Controller1.ButtonR1.RELEASED or Controller1.ButtonR2.RELEASED){
+        intake.stop(brake);
+        conveyorBelt.stop(brake);
+      }
+
+
+        if (Controller1.ButtonL1.PRESSED){
+          mogoClamp();
+        } 
+        if (Controller1.ButtonL1.PRESSED){
+          mogoUnclamp();
+        }
+        
+        /*if(Controller1.ButtonL1.pressing()){
+         clamp1.set(true);
+      }
+      else if(Controller1.ButtonL2.pressing()){
+       clamp1.set(false);
+      }
+      */
+      
+
+    
 
     wait(20, msec); // Sleep the task for a short amount of time to
                     // prevent wasted resources
