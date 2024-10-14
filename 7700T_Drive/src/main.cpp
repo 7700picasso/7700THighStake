@@ -174,9 +174,9 @@ void usercontrol(void) {
       display();
 
       int LeftJoystick = Controller1.Axis3.position(pct);
-      int RightJoystick = Controller1.Axis1.position(pct);
+      int RightJoystick = Controller1.Axis2.position(pct);
 
-      time_drive(LeftJoystick + RightJoystick, LeftJoystick - RightJoystick, 10);
+      time_drive(LeftJoystick, RightJoystick, 10);
 
       if(Controller1.ButtonR1.PRESSED){
         intake.setVelocity(100, pct);
