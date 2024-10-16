@@ -20,12 +20,12 @@ float gr = 0.43;
 float Dia = 4.0;
 
 // define your global instances of motors and other devices here
-motor LM = motor(PORT10, ratio6_1, false);
-motor RM = motor(PORT20, ratio6_1, true);
-motor LB = motor(PORT7, ratio6_1, false);
-motor RB = motor(PORT1, ratio6_1, true);
+motor LM = motor(PORT10, ratio6_1, true);
+motor RM = motor(PORT20, ratio6_1, false);
+motor LB = motor(PORT7, ratio6_1, true);
+motor RB = motor(PORT1, ratio6_1, false);
 motor intake = motor(PORT16, ratio18_1, true);
-motor conveyorBelt = motor(PORT12, ratio18_1, true);
+motor conveyorBelt = motor(PORT12, ratio18_1, false);
 digital_out clamp1(Brain.ThreeWirePort.A);
 
 /*---------------------------------------------------------------------------*/
