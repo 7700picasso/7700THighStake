@@ -20,12 +20,21 @@ float gr = 0.43;
 float Dia = 4.0;
 
 // define your global instances of motors and other devices here
+<<<<<<< HEAD
 motor LM = motor(PORT10, ratio6_1, false);
 motor RM = motor(PORT20, ratio6_1, true);
 motor LB = motor(PORT7, ratio6_1, false);
 motor RB = motor(PORT1, ratio6_1, true);
-motor intake = motor(PORT16, ratio18_1, true);
+motor intake = motor(PORT16, ratio18_1, false);
 motor conveyorBelt = motor(PORT12, ratio18_1, true);
+=======
+motor LM = motor(PORT10, ratio6_1, true);
+motor RM = motor(PORT20, ratio6_1, false);
+motor LB = motor(PORT7, ratio6_1, true);
+motor RB = motor(PORT1, ratio6_1, false);
+motor intake = motor(PORT16, ratio18_1, true);
+motor conveyorBelt = motor(PORT12, ratio18_1, false);
+>>>>>>> 0ac80885b69936399cb537e872b3c91195c3ab04
 digital_out clamp1(Brain.ThreeWirePort.A);
 
 /*---------------------------------------------------------------------------*/
@@ -173,11 +182,13 @@ void usercontrol(void) {
 
       display();
 
+      // drive
       int LeftJoystick = Controller1.Axis3.position(pct);
       int RightJoystick = Controller1.Axis2.position(pct);
 
       time_drive(LeftJoystick, RightJoystick, 10);
 
+      // intake & conveyor belt
       if(Controller1.ButtonR1.PRESSED){
         intake.setVelocity(100, pct);
         intake.spin(fwd);
@@ -195,11 +206,11 @@ void usercontrol(void) {
         conveyorBelt.stop(brake);
       }
 
-
+        // pneumatics (mobile goal clamp)
         if (Controller1.ButtonL2.PRESSED){
           mogoClamp();
         } 
-        if (Controller1.ButtonL1.PRESSED){
+        if (Controller1.ButtonL2.PRESSED){
           mogoUnclamp();
         }
         
