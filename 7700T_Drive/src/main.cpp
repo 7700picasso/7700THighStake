@@ -201,7 +201,7 @@ void usercontrol(void) {
         if (Controller1.ButtonL2.PRESSED){
           mogoClamp();
         } 
-        if (Controller1.ButtonL2.PRESSED){
+        if (Controller1.ButtonL1.PRESSED){
           mogoUnclamp();
         }
         
