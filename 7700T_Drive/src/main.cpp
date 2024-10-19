@@ -27,6 +27,7 @@ motor RB = motor(PORT1, ratio6_1, false);
 motor intake = motor(PORT16, ratio18_1, true);
 motor conveyorBelt = motor(PORT12, ratio18_1, false);
 digital_out clamp1(Brain.ThreeWirePort.A);
+inertial Gyro1 = inertial(PORT2);
 
 /*---------------------------------------------------------------------------*/
 /*                          Pre-Autonomous Functions                         */
@@ -133,6 +134,32 @@ void PinchDrive(float target){
   stopDrive();
 }
 
+void GyroTurn(float target){
+  Gyro1.setHeading(0, deg);
+  float x = Gyro1.heading(deg);
+  float error = target - x;
+  float accuracy = 0.5;
+  float kp = 3.0;
+  float speed = kp*error;
+  if(target > 0){
+    while(fabs(error) > accuracy){
+      time_drive(speed, -speed, 25);
+      x = Gyro1.heading(deg);
+      error = target - x;
+      speed = kp*error;
+    }
+  } 
+  else if(target < 0){
+    while(fabs(error) < accuracy){
+      time_drive(-speed, speed, 25);
+      x = Gyro1.heading(deg);
+      error = target - x;
+      speed = kp*error;
+    }
+  }
+  stopDrive();
+}
+
 /*---------------------------------------------------------------------------*/
 
 void pre_auton(void) {
@@ -153,7 +180,13 @@ void pre_auton(void) {
 
 void autonomous(void) {
   // ..........................................................................
-  // Insert autonomous user code here.
+
+  PinchDrive(48.0);
+  GyroTurn(-90.0);
+  PinchDrive(24.0);
+  GyroTurn(35.0);
+  PinchDrive(34.32);
+
   // ..........................................................................
 }
 
