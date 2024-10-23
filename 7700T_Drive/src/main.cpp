@@ -23,11 +23,11 @@ float Dia = 4.0;
 motor LM = motor(PORT10, ratio6_1, true);
 motor RM = motor(PORT20, ratio6_1, false);
 motor LB = motor(PORT7, ratio6_1, true);
-motor RB = motor(PORT1, ratio6_1, false);
+motor RB = motor(PORT2, ratio6_1, false);
 motor intake = motor(PORT16, ratio18_1, true);
 motor conveyorBelt = motor(PORT12, ratio18_1, false);
 digital_out clamp1(Brain.ThreeWirePort.A);
-inertial Gyro1 = inertial(PORT2);
+inertial Gyro1 = inertial(PORT3);
 
 /*---------------------------------------------------------------------------*/
 /*                          Pre-Autonomous Functions                         */
@@ -136,24 +136,24 @@ void PinchDrive(float target){
 
 void GyroTurn(float target){
   Gyro1.setHeading(0, deg);
-  float x = Gyro1.heading(deg);
-  float error = target - x;
+  float theta = Gyro1.heading(deg);
+  float error = target - theta;
   float accuracy = 0.5;
   float kp = 3.0;
   float speed = kp*error;
   if(target > 0){
     while(fabs(error) > accuracy){
       time_drive(speed, -speed, 25);
-      x = Gyro1.heading(deg);
-      error = target - x;
+      theta = Gyro1.heading(deg);
+      error = target - theta;
       speed = kp*error;
     }
   } 
   else if(target < 0){
-    while(fabs(error) < accuracy){
+    while(fabs(error) > accuracy){
       time_drive(-speed, speed, 25);
-      x = Gyro1.heading(deg);
-      error = target - x;
+      theta = Gyro1.heading(deg);
+      error = target - theta;
       speed = kp*error;
     }
   }
