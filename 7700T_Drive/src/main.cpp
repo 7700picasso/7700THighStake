@@ -33,10 +33,10 @@ inertial Gyro1 = inertial(PORT3);
 /*                          Pre-Autonomous Functions                         */
 
 void stopDrive(){
-  LB.stop(brake);
-  RB.stop(brake);
-  LM.stop(brake);
-  RM.stop(brake);
+  LB.stop(hold);
+  RB.stop(hold);
+  LM.stop(hold);
+  RM.stop(hold);
 }
 
 
@@ -137,12 +137,13 @@ void PinchDrive(float target){
 void GyroTurn(float target){
   Gyro1.setHeading(0, deg);
   float theta = Gyro1.heading(deg);
-  float error = target - theta;
+  float error = fabs(target) - fabs(theta);
   float accuracy = 0.5;
-  float kp = 3.0;
+  float kp = 0.5123456;
   float speed = kp*error;
   if(target > 0){
     while(fabs(error) > accuracy){
+      Brain.Screen.printAt(10, 20, "Heading = %0.2f", theta);
       time_drive(speed, -speed, 25);
       theta = Gyro1.heading(deg);
       error = target - theta;
@@ -151,6 +152,7 @@ void GyroTurn(float target){
   } 
   else if(target < 0){
     while(fabs(error) > accuracy){
+      Brain.Screen.printAt(10, 20, "Heading = %0.2f", theta);
       time_drive(-speed, speed, 25);
       theta = Gyro1.heading(deg);
       error = target - theta;
@@ -166,6 +168,10 @@ void pre_auton(void) {
 
   // All activities that occur before the competition starts
   // Example: clearing encoders, setting servo positions, ...
+  while(Gyro1.isCalibrating()){
+    wait(10, msec);
+    // :)
+  }
 }
 
 /*---------------------------------------------------------------------------*/
@@ -181,12 +187,16 @@ void pre_auton(void) {
 void autonomous(void) {
   // ..........................................................................
 
-  PinchDrive(48.0);
-  GyroTurn(-90.0);
-  PinchDrive(24.0);
-  GyroTurn(35.0);
-  PinchDrive(34.32);
-
+  /* gyroTurn(88);
+  stopDrive(); */
+  mogoUnclamp();
+  PinchDrive(-26);
+  mogoClamp();
+  wait(150, msec);
+  intake.spin(fwd, 100, pct);
+  conveyorBelt.spin(fwd, 100, pct);
+  wait(5, sec);
+  stopDrive();
   // ..........................................................................
 }
 
