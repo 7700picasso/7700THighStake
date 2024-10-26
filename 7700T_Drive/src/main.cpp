@@ -33,10 +33,10 @@ inertial Gyro1 = inertial(PORT3);
 /*                          Pre-Autonomous Functions                         */
 
 void stopDrive(){
-  LB.stop(hold);
-  RB.stop(hold);
-  LM.stop(hold);
-  RM.stop(hold);
+  LB.stop(brake);
+  RB.stop(brake);
+  LM.stop(brake);
+  RM.stop(brake);
 }
 
 
@@ -139,12 +139,12 @@ void GyroTurn(float target){
   float theta = Gyro1.heading(deg);
   float error = fabs(target) - fabs(theta);
   float accuracy = 0.5;
-  float kp = 0.5123456;
+  float kp = 0.3123456;
   float speed = kp*error;
   if(target > 0){
     while(fabs(error) > accuracy){
       Brain.Screen.printAt(10, 20, "Heading = %0.2f", theta);
-      time_drive(speed, -speed, 25);
+      time_drive(speed, -speed, 10);
       theta = Gyro1.heading(deg);
       error = target - theta;
       speed = kp*error;
@@ -187,8 +187,6 @@ void pre_auton(void) {
 void autonomous(void) {
   // ..........................................................................
 
-  /* gyroTurn(88);
-  stopDrive(); */
   mogoUnclamp();
   PinchDrive(-26);
   mogoClamp();
@@ -197,8 +195,9 @@ void autonomous(void) {
   conveyorBelt.spin(fwd, 100, pct);
   wait(5, sec);
   stopDrive();
-  // ..........................................................................
 }
+  // ..........................................................................
+
 
 /*---------------------------------------------------------------------------*/
 /*                                                                           */
@@ -210,7 +209,7 @@ void autonomous(void) {
 /*  You must modify the code to add your own robot specific commands here.   */
 /*---------------------------------------------------------------------------*/
 
-void usercontrol(void) {
+void usercontrol(void){
   // User control code here, inside the loop
   while (1) {
 
@@ -267,7 +266,7 @@ void usercontrol(void) {
 //
 // Main will set up the competition functions and callbacks.
 //
-int main() {
+int main(){
   // Set up callbacks for autonomous and driver control periods.
   Competition.autonomous(autonomous);
   Competition.drivercontrol(usercontrol);
