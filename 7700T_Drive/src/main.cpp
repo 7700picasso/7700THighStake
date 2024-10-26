@@ -27,6 +27,7 @@ motor RB = motor(PORT2, ratio6_1, false);
 motor intake = motor(PORT16, ratio18_1, true);
 motor conveyorBelt = motor(PORT12, ratio18_1, false);
 digital_out clamp1(Brain.ThreeWirePort.A);
+digital_out doinker1(Brain.ThreeWirePort.B);
 inertial Gyro1 = inertial(PORT3);
 
 /*---------------------------------------------------------------------------*/
@@ -243,8 +244,15 @@ void usercontrol(void){
         if (Controller1.ButtonL2.PRESSED){
           mogoClamp();
         } 
-        if (Controller1.ButtonL1.PRESSED){
+        else if (Controller1.ButtonL1.PRESSED){
           mogoUnclamp();
+        }
+
+        if (Controller1.ButtonUp.PRESSED){
+          doinker1.set(false);
+        }
+        else if (Controller1.ButtonDown.PRESSED){
+          doinker1.set(true);
         }
         
         /*if(Controller1.ButtonL1.pressing()){
