@@ -189,14 +189,17 @@ void autonomous(void) {
   // ..........................................................................
 
   mogoUnclamp();
-  PinchDrive(-26);
+  PinchDrive(-27);
   mogoClamp();
-  wait(150, msec);
+  wait(250, msec);
   intake.spin(fwd, 100, pct);
   conveyorBelt.spin(fwd, 100, pct);
-  wait(5, sec);
+  wait(1.5, sec);
   stopDrive();
+  conveyorBelt.spin(reverse, 100, pct);
+  wait(0.5, sec);
 }
+ 
   // ..........................................................................
 
 
