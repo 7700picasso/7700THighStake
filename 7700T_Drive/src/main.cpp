@@ -28,7 +28,7 @@ motor intake = motor(PORT16, ratio18_1, true);
 motor conveyorBelt = motor(PORT12, ratio18_1, false);
 digital_out clamp1(Brain.ThreeWirePort.A);
 digital_out doinker1(Brain.ThreeWirePort.B);
-inertial Gyro1 = inertial(PORT3);
+inertial Gyro1 = inertial(PORT13);
 
 /*---------------------------------------------------------------------------*/
 /*                          Pre-Autonomous Functions                         */
@@ -136,26 +136,26 @@ void PinchDrive(float target){
 }
 
 void GyroTurn(float target){
-  Gyro1.setHeading(0, deg);
-  float theta = Gyro1.heading(deg);
+  Gyro1.resetHeading();
+  Gyro1.resetRotation();
+  float theta = 0.0;
   float error = fabs(target) - fabs(theta);
-  float accuracy = 0.5;
-  float kp = 0.3123456;
+  float accuracy = 2.0;
+  float kp = .5;
   float speed = kp*error;
   if(target > 0){
-    while(fabs(error) > accuracy){
+    while(theta < target){
       Brain.Screen.printAt(10, 20, "Heading = %0.2f", theta);
       time_drive(speed, -speed, 10);
-      theta = Gyro1.heading(deg);
-      error = target - theta;
-      speed = kp*error;
+      theta = Gyro1.angle();
+      wait(5, msec);
     }
   } 
   else if(target < 0){
     while(fabs(error) > accuracy){
       Brain.Screen.printAt(10, 20, "Heading = %0.2f", theta);
       time_drive(-speed, speed, 25);
-      theta = Gyro1.heading(deg);
+      theta = Gyro1.angle();
       error = target - theta;
       speed = kp*error;
     }
@@ -166,6 +166,8 @@ void GyroTurn(float target){
 /*---------------------------------------------------------------------------*/
 
 void pre_auton(void) {
+Gyro1.calibrate();
+
 
   // All activities that occur before the competition starts
   // Example: clearing encoders, setting servo positions, ...
@@ -188,20 +190,21 @@ void pre_auton(void) {
 void autonomous(void) {
   // ..........................................................................
 
-  mogoUnclamp();
+  GyroTurn(90.0);
+  /* mogoUnclamp();
   PinchDrive(-27);
   mogoClamp();
   wait(250, msec);
   intake.spin(fwd, 100, pct);
   conveyorBelt.spin(fwd, 100, pct);
   wait(1.5, sec);
-  stopDrive();
-  conveyorBelt.spin(reverse, 100, pct);
+  conveyorBelt.spinToPosition(200, deg);
   wait(0.5, sec);
+  GyroTurn(160);
+  PinchDrive(12); */
 }
- 
-  // ..........................................................................
 
+  // ..........................................................................
 
 /*---------------------------------------------------------------------------*/
 /*                                                                           */
