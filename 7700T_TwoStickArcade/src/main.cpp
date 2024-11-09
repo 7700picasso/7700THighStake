@@ -215,10 +215,10 @@ void usercontrol(void){
       display();
 
       // drive
-      int LeftJoystick = Controller1.Axis3.position(pct);
-      int RightJoystick = Controller1.Axis2.position(pct);
+      int LeftJoystick = Controller1.Axis1.position(pct);
+      int RightJoystick = Controller1.Axis3.position(pct);
 
-      time_drive(LeftJoystick, RightJoystick, 10);
+      time_drive(LeftJoystick + RightJoystick, LeftJoystick - RightJoystick, 10);
 
       // intake & conveyor belt
       if(Controller1.ButtonR1.PRESSED){
