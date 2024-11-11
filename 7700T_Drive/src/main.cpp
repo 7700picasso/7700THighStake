@@ -139,7 +139,7 @@ void GyroTurn(float target){
   float theta = 0.0;
   float error = target - theta;
   float accuracy = 2.0;
-  float kp = 0.2;
+  float kp = 1.4;
   float speed = kp*error;
   Gyro1.setRotation(0.0, deg);
   while(fabs(error) >= accuracy){
@@ -182,7 +182,8 @@ void autonomous(void) {
   wait(200, msec);
   PinchDrive(24); */
 
-  mogoUnclamp();
+  // 15-sec autonomous
+  /* mogoUnclamp();
   PinchDrive(-27);
   mogoClamp();
   wait(250, msec);
@@ -193,7 +194,19 @@ void autonomous(void) {
   wait(0.5, sec);
   GyroTurn(190);
   wait(200, msec);
-  PinchDrive(22);
+  PinchDrive(22); */
+
+  mogoUnclamp();
+  PinchDrive(-27);
+  mogoClamp();
+  wait(250, msec);
+  intake.spin(fwd, 100, pct);
+  conveyorBelt.spin(fwd, 100, pct);
+  wait(1.5, sec);
+  GyroTurn(75);
+  wait(250, msec);
+  PinchDrive(24);
+
 }
 
   // ..........................................................................
@@ -212,6 +225,7 @@ void usercontrol(void){
   // User control code here, inside the loop
   while (1) {
 
+      //drive
       display();
 
       // drive
@@ -250,8 +264,9 @@ void usercontrol(void){
           doinker1.set(false);
         }
         else if (Controller1.ButtonDown.PRESSED){
-          doinker1.set(true);
+          doinker1.set(true); 
         }
+        // delete comments up to here
         
         /*if(Controller1.ButtonL1.pressing()){
          clamp1.set(true);

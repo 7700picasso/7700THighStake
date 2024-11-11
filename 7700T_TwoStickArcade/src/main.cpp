@@ -139,7 +139,7 @@ void GyroTurn(float target){
   float theta = 0.0;
   float error = target - theta;
   float accuracy = 2.0;
-  float kp = 0.2;
+  float kp = 1.4;
   float speed = kp*error;
   Gyro1.setRotation(0.0, deg);
   while(fabs(error) >= accuracy){
@@ -189,11 +189,9 @@ void autonomous(void) {
   intake.spin(fwd, 100, pct);
   conveyorBelt.spin(fwd, 100, pct);
   wait(1.5, sec);
-  conveyorBelt.spinToPosition(220, deg);   
-  wait(0.5, sec);
-  GyroTurn(190);
-  wait(200, msec);
-  PinchDrive(22);
+  GyroTurn(75);
+  wait(250, msec);
+  PinchDrive(24);
 }
 
   // ..........................................................................
@@ -215,8 +213,8 @@ void usercontrol(void){
       display();
 
       // drive
-      int LeftJoystick = Controller1.Axis1.position(pct);
-      int RightJoystick = Controller1.Axis3.position(pct);
+      int LeftJoystick = Controller1.Axis3.position(pct);
+      int RightJoystick = Controller1.Axis1.position(pct);
 
       time_drive(LeftJoystick + RightJoystick, LeftJoystick - RightJoystick, 10);
 
