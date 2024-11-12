@@ -1,0 +1,19 @@
+{
+	"extension": {
+		"version": "0.6.0",
+		"json": 2
+	},
+	"project": {
+		"name": "7700T_AutonSkills",
+		"description": "",
+		"creationDate": "11/11/2024, 2:14:39 PM",
+		"platform": "V5",
+		"language": "cpp",
+		"slot": 3,
+		"sdkVersion": "V5_20240223_11_00_00",
+		"cpp": {
+			"includePath": [],
+			"printf_float": true
+		}
+	}
+}
