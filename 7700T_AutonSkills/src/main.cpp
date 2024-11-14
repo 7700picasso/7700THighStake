@@ -142,16 +142,17 @@ void PinchDrive(float target){
 void GyroTurn(float target){
   float theta = 0.0;
   float error = target - theta;
-  float accuracy = 5.0;
-  float kp = 0.55; 
+  float accuracy = 0.5;
+  float kp = 1.00; 
   float speed = kp*error;
   Gyro1.setRotation(0.0, deg);
-  while(fabs(error) >= accuracy){
+  while(fabs(error) > accuracy){ //
     GyroPrint();
-    speed = kp*error;
-    time_drive(speed, -speed, 10);
+    
+    time_drive(speed *(error)/error, -speed*(error)/error, 10);
     theta = Gyro1.rotation();
     error = target - theta;
+    speed = kp*error;
   }
   stopDrive();
 }
@@ -164,7 +165,7 @@ void pre_auton(void) {
   // All activities that occur before the competition starts
   // Example: clearing encoders, setting servo positions, ...
   while(Gyro1.isCalibrating()){                                  
-    wait(10, msec);
+    wait(200, msec);
     // :)
   }
 }
@@ -182,14 +183,15 @@ void pre_auton(void) {
 void autonomous(void) {   
 // ..........................................................................
 
-GyroPrint();
-GyroTurn(90);
+
+GyroTurn(-90);
+  Brain.Screen.printAt(10, 50, "Heading = %0.2f", Gyro1.rotation(deg));
 // GyroTurn testing
 /*GyroTurn(90);
 PinchDrive(48);*/
 
 // PinchDrive testing
-// PinchDrive(20);
+ PinchDrive(3);
 
 // auto skills
 /*mogoUnclamp();
