@@ -40,6 +40,9 @@ void stopDrive(){
   RM.stop(brake);
 }
 
+void GyroPrint(){
+  Brain.Screen.printAt(10, 20, "Heading = %0.2f", Gyro1.rotation(deg));
+}
 
 void mogoClamp(){ 
   clamp1.set(true);
@@ -120,6 +123,7 @@ void display(){
 }
 
 void PinchDrive(float target){
+  // 1 inch off
   LM.setPosition(0, rev);
   float x = pi*LM.position(rev)*gr*Dia;
   float error = target - x;
@@ -138,11 +142,12 @@ void PinchDrive(float target){
 void GyroTurn(float target){
   float theta = 0.0;
   float error = target - theta;
-  float accuracy = 2.0;
-  float kp = 0.75; 
+  float accuracy = 2;
+  float kp = 3.0; 
   float speed = kp*error;
   Gyro1.setRotation(0.0, deg);
   while(fabs(error) >= accuracy){
+    GyroPrint();
     speed = kp*error;
     time_drive(speed, -speed, 10);
     theta = Gyro1.rotation();
@@ -153,7 +158,7 @@ void GyroTurn(float target){
 /*---------------------------------------------------------------------------*/
 
 void pre_auton(void) {
-Gyro1.calibrate();
+//Gyro1.calibrate();
 
 
   // All activities that occur before the competition starts
@@ -177,9 +182,14 @@ Gyro1.calibrate();
 void autonomous(void) {   
 // ..........................................................................
 
-// testing
+GyroPrint();
 GyroTurn(90);
-PinchDrive(48);
+// GyroTurn testing
+/*GyroTurn(90);
+PinchDrive(48);*/
+
+// PinchDrive testing
+// PinchDrive(20);
 
 // auto skills
 /*mogoUnclamp();
