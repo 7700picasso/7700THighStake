@@ -214,6 +214,13 @@ PinchDrive(40);
 mogoUnclamp();
 */
 
+// auto skills from 1st comp day
+/*mogoUnclamp();
+PinchDrive(-27);
+mogoClamp();
+time_drive(50, -50, 230);
+PinchDrive(-30);*/
+
 }
 
   // ..........................................................................
