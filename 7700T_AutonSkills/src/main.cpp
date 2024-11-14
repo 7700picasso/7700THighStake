@@ -142,8 +142,8 @@ void PinchDrive(float target){
 void GyroTurn(float target){
   float theta = 0.0;
   float error = target - theta;
-  float accuracy = 2;
-  float kp = 3.0; 
+  float accuracy = 5.0;
+  float kp = 0.55; 
   float speed = kp*error;
   Gyro1.setRotation(0.0, deg);
   while(fabs(error) >= accuracy){
@@ -163,7 +163,7 @@ void pre_auton(void) {
 
   // All activities that occur before the competition starts
   // Example: clearing encoders, setting servo positions, ...
-  while(Gyro1.isCalibrating()){
+  while(Gyro1.isCalibrating()){                                  
     wait(10, msec);
     // :)
   }
