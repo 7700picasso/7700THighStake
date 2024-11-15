@@ -146,16 +146,36 @@ void GyroTurn(float target){
   float kp = 1.00; 
   float speed = kp*error;
   Gyro1.setRotation(0.0, deg);
-  while(fabs(error) > accuracy){ //
+  while(fabs(error) > accuracy){ 
     GyroPrint();
-    
     time_drive(speed *(error)/error, -speed*(error)/error, 10);
     theta = Gyro1.rotation();
     error = target - theta;
     speed = kp*error;
   }
   stopDrive();
+
 }
+
+void GyroTurn(float target){
+  float theta = 0.0;
+  float error = target - theta;
+  float accuracy = 0.5;
+  float kp = 1.00; 
+  float speed = kp*error;
+  Gyro1.setRotation(0.0, deg);
+  while(fabs(error) > accuracy){ 
+    GyroPrint();
+    time_drive(speed *(error)/error, -speed*(error)/error, 10);
+    theta = Gyro1.rotation();
+    error = target - theta;
+    speed = kp*error;
+  }
+  stopDrive();
+  
+}
+
+
 /*---------------------------------------------------------------------------*/
 
 void pre_auton(void) {
@@ -191,7 +211,7 @@ GyroTurn(-90);
 PinchDrive(48);*/
 
 // PinchDrive testing
- PinchDrive(3);
+//PinchDrive(3);
 
 // auto skills
 /*mogoUnclamp();
@@ -213,8 +233,7 @@ GyroTurn(180);
 PinchDrive(40);
 GyroTurn(-90);
 PinchDrive(40);
-mogoUnclamp();
-*/
+mogoUnclamp();*/
 
 // auto skills from 1st comp day
 /*mogoUnclamp();
