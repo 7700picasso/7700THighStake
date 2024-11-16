@@ -206,6 +206,10 @@ void autonomous(void) {
   GyroTurn(-75);
   wait(300, msec);
   PinchDrive(24);
+  /*
+  wait(300,msec);
+  GyroTurn(180);
+  PinchDrive(40);*/
 
 }
 

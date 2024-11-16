@@ -216,8 +216,12 @@ void autonomous(void) {
   conveyorBelt.spin(fwd, 100, pct);
   wait(1.5, sec);
   GyroTurn(75);
-  wait(250, msec);
+  wait(300, msec);
   PinchDrive(24);
+  /*
+  wait(300,msec);
+  GyroTurn(180)
+  PinchDrive(40);*/
 }
 
   // ..........................................................................

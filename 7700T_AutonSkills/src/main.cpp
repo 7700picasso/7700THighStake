@@ -157,24 +157,6 @@ void GyroTurn(float target){
 
 }
 
-void GyroTurn(float target){
-  float theta = 0.0;
-  float error = target - theta;
-  float accuracy = 0.5;
-  float kp = 1.00; 
-  float speed = kp*error;
-  Gyro1.setRotation(0.0, deg);
-  while(fabs(error) > accuracy){ 
-    GyroPrint();
-    time_drive(speed *(error)/error, -speed*(error)/error, 10);
-    theta = Gyro1.rotation();
-    error = target - theta;
-    speed = kp*error;
-  }
-  stopDrive();
-  
-}
-
 
 /*---------------------------------------------------------------------------*/
 
@@ -203,9 +185,8 @@ void pre_auton(void) {
 void autonomous(void) {   
 // ..........................................................................
 
-
-GyroTurn(-90);
-  Brain.Screen.printAt(10, 50, "Heading = %0.2f", Gyro1.rotation(deg));
+// GyroTurn(-90);
+// Brain.Screen.printAt(10, 50, "Heading = %0.2f", Gyro1.rotation(deg));
 // GyroTurn testing
 /*GyroTurn(90);
 PinchDrive(48);*/
@@ -213,7 +194,7 @@ PinchDrive(48);*/
 // PinchDrive testing
 //PinchDrive(3);
 
-// auto skills
+// auto skills (alliance stakes)
 /*mogoUnclamp();
 PinchDrive(-3);
 mogoClamp();
@@ -231,16 +212,20 @@ mogoClamp();
 wait(250, msec);
 GyroTurn(180);
 PinchDrive(40);
-GyroTurn(-90);
+GyroTurn(-90);=09
 PinchDrive(40);
 mogoUnclamp();*/
 
+// auto skills (normal/no alliance stakes) not finished
+//PinchDrive(-5);
+
+
 // auto skills from 1st comp day
-/*mogoUnclamp();
+mogoUnclamp();
 PinchDrive(-27);
 mogoClamp();
 time_drive(50, -50, 230);
-PinchDrive(-30);*/
+PinchDrive(-30);
 
 }
 
