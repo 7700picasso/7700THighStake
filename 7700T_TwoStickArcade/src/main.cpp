@@ -39,17 +39,17 @@ int AutoMin = 0;
 int AutonMax = 4;
 void drawGUI() {
   Brain.Screen.clearScreen();
-  Brain.Screen.printAt(130, 20, "LPassive");
+  Brain.Screen.printAt(120, 20, "LPassive");
   Brain.Screen.setFillColor(red);
   Brain.Screen.drawRectangle(5, 5, 220, 100);
-  Brain.Screen.printAt(260, 20, "RPassive");
   Brain.Screen.setFillColor(green);
+  Brain.Screen.printAt(320, 20, "RPassive");
   Brain.Screen.drawRectangle(250, 5, 220, 100);
-  Brain.Screen.printAt(130, 136, "LRush");
   Brain.Screen.setFillColor(blue);
+  Brain.Screen.printAt(120, 140, "LRush");
   Brain.Screen.drawRectangle(5, 121, 220, 100);
-  Brain.Screen.printAt(260, 136, "RRush");
   Brain.Screen.setFillColor(yellow);
+  Brain.Screen.printAt(320, 140, "RRush");
   Brain.Screen.drawRectangle(250, 121, 220, 100);
 }
 
@@ -205,10 +205,10 @@ void autonomous(void) {
   PinchDrive(24); */
 
   // auton selector (GUI) testing
-  // drawGUI();
+   drawGUI();
 
   // auton
-  mogoUnclamp();
+  /*mogoUnclamp();
   PinchDrive(-27);
   mogoClamp();
   wait(250, msec);
@@ -217,7 +217,7 @@ void autonomous(void) {
   wait(1.5, sec);
   GyroTurn(75);
   wait(250, msec);
-  PinchDrive(24);
+  PinchDrive(24);*/
 }
 
   // ..........................................................................
