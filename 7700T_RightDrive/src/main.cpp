@@ -11,7 +11,7 @@
 
 using namespace vex;
 
-// A global instance of competitions
+// A global instance of competition
 competition Competition;
 brain Brain;
 controller Controller1;
@@ -32,27 +32,6 @@ inertial Gyro1 = inertial(PORT13);
 
 /*---------------------------------------------------------------------------*/
 /*                          Pre-Autonomous Functions                         */
-
-// Auton Selector (GUI)
-int AutonSelected = 0;
-int AutoMin = 0;
-int AutonMax = 4;
-void drawGUI() {
-  Brain.Screen.clearScreen();
-  Brain.Screen.printAt(120, 20, "LPassive");
-  Brain.Screen.setFillColor(red);
-  Brain.Screen.drawRectangle(5, 5, 220, 100);
-  Brain.Screen.setFillColor(green);
-  Brain.Screen.printAt(320, 20, "RPassive");
-  Brain.Screen.drawRectangle(250, 5, 220, 100);
-  Brain.Screen.setFillColor(blue);
-  Brain.Screen.printAt(120, 140, "LRush");
-  Brain.Screen.drawRectangle(5, 121, 220, 100);
-  Brain.Screen.setFillColor(yellow);
-  Brain.Screen.printAt(320, 140, "RRush");
-  Brain.Screen.drawRectangle(250, 121, 220, 100);
-}
-
 
 void stopDrive(){
   LB.stop(brake);
@@ -102,7 +81,6 @@ void MotorDisplay(double y, double current, double temp){
 }
 
 void display(){
-  Brain.Screen.clearScreen();
   double LMCurrent = LM.current(amp);
   double LMTemp = LM.temperature(celsius);
   double LBCurrent = LB.current(amp);
@@ -204,10 +182,20 @@ void autonomous(void) {
   wait(200, msec);
   PinchDrive(24); */
 
-  // auton selector (GUI) testing
-  // drawGUI();
+  // 15-sec autonomous
+  /* mogoUnclamp();
+  PinchDrive(-27);
+  mogoClamp();
+  wait(250, msec);
+  intake.spin(fwd, 100, pct);
+  conveyorBelt.spin(fwd, 100, pct);
+  wait(1.5, sec);
+  conveyorBelt.spinToPosition(220, deg);   
+  wait(0.5, sec);
+  GyroTurn(190);
+  wait(200, msec);
+  PinchDrive(22); */
 
-  // auton
   mogoUnclamp();
   PinchDrive(-27);
   mogoClamp();
@@ -215,9 +203,10 @@ void autonomous(void) {
   intake.spin(fwd, 100, pct);
   conveyorBelt.spin(fwd, 100, pct);
   wait(1.5, sec);
-  GyroTurn(75);
-  wait(250, msec);
+  GyroTurn(-75);
+  wait(300, msec);
   PinchDrive(24);
+
 }
 
   // ..........................................................................
@@ -236,13 +225,14 @@ void usercontrol(void){
   // User control code here, inside the loop
   while (1) {
 
+      //drive
       display();
 
       // drive
       int LeftJoystick = Controller1.Axis3.position(pct);
-      int RightJoystick = Controller1.Axis1.position(pct);
+      int RightJoystick = Controller1.Axis2.position(pct);
 
-      time_drive(LeftJoystick + RightJoystick, LeftJoystick - RightJoystick, 10);
+      time_drive(LeftJoystick, RightJoystick, 10);
 
       // intake & conveyor belt
       if(Controller1.ButtonR1.PRESSED){
@@ -274,8 +264,9 @@ void usercontrol(void){
           doinker1.set(false);
         }
         else if (Controller1.ButtonDown.PRESSED){
-          doinker1.set(true);
+          doinker1.set(true); 
         }
+        // delete comments up to here
         
         /*if(Controller1.ButtonL1.pressing()){
          clamp1.set(true);
