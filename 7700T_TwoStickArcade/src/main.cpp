@@ -11,7 +11,7 @@
 
 using namespace vex;
 
-// A global instance of competition
+// A global instance of competitions
 competition Competition;
 brain Brain;
 controller Controller1;
@@ -32,6 +32,27 @@ inertial Gyro1 = inertial(PORT13);
 
 /*---------------------------------------------------------------------------*/
 /*                          Pre-Autonomous Functions                         */
+
+// Auton Selector (GUI)
+int AutonSelected = 0;
+int AutoMin = 0;
+int AutonMax = 4;
+void drawGUI() {
+  Brain.Screen.clearScreen();
+  Brain.Screen.printAt(130, 20, "LPassive");
+  Brain.Screen.setFillColor(red);
+  Brain.Screen.drawRectangle(5, 5, 220, 100);
+  Brain.Screen.printAt(260, 20, "RPassive");
+  Brain.Screen.setFillColor(green);
+  Brain.Screen.drawRectangle(250, 5, 220, 100);
+  Brain.Screen.printAt(130, 136, "LRush");
+  Brain.Screen.setFillColor(blue);
+  Brain.Screen.drawRectangle(5, 121, 220, 100);
+  Brain.Screen.printAt(260, 136, "RRush");
+  Brain.Screen.setFillColor(yellow);
+  Brain.Screen.drawRectangle(250, 121, 220, 100);
+}
+
 
 void stopDrive(){
   LB.stop(brake);
@@ -81,6 +102,7 @@ void MotorDisplay(double y, double current, double temp){
 }
 
 void display(){
+  Brain.Screen.clearScreen();
   double LMCurrent = LM.current(amp);
   double LMTemp = LM.temperature(celsius);
   double LBCurrent = LB.current(amp);
@@ -182,6 +204,10 @@ void autonomous(void) {
   wait(200, msec);
   PinchDrive(24); */
 
+  // auton selector (GUI) testing
+  // drawGUI();
+
+  // auton
   mogoUnclamp();
   PinchDrive(-27);
   mogoClamp();
@@ -191,7 +217,7 @@ void autonomous(void) {
   wait(1.5, sec);
   GyroTurn(75);
   wait(250, msec);
-  PinchDrive(24); 
+  PinchDrive(24);
 }
 
   // ..........................................................................
