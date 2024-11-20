@@ -205,10 +205,10 @@ void autonomous(void) {
   PinchDrive(24); */
 
   // auton selector (GUI) testing
-  // drawGUI();
+  drawGUI();
 
   // auton
-  mogoUnclamp();
+  /*mogoUnclamp();
   PinchDrive(-27);
   mogoClamp();
   wait(250, msec);
@@ -217,7 +217,8 @@ void autonomous(void) {
   wait(1.5, sec);
   GyroTurn(75);
   wait(300, msec);
-  PinchDrive(24);
+  PinchDrive(24);*/
+
   /*
   wait(300,msec);
   GyroTurn(180)
