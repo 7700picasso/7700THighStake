@@ -37,22 +37,20 @@ inertial Gyro1 = inertial(PORT13);
 int AutonSelected = 0;
 int AutonMin = 0;
 int AutonMax = 4;
-void drawGUI(){
-  Brain.Screen.clearScreen();
-  Brain.Screen.setFillColor(red);
-  Brain.Screen.drawRectangle(5, 5, 220, 100);
-  Brain.Screen.setPenColor(black);
-  Brain.Screen.printAt(5, 20, "LPassive");
-  Brain.Screen.setFillColor(green);
-  Brain.Screen.drawRectangle(250, 5, 220, 100);
-  Brain.Screen.printAt(250, 20, "RPassive");
-  Brain.Screen.setFillColor(blue);
-  Brain.Screen.drawRectangle(5, 121, 220, 100);
-  Brain.Screen.printAt(5, 136, "LRush");
-  Brain.Screen.setFillColor(yellow);
-  Brain.Screen.drawRectangle(250, 121, 220, 100);
-  Brain.Screen.printAt(250, 136, "RRush");
 
+void drawGUI(){
+	// Draws 2 buttons to be used for selecting auto
+	Brain.Screen.clearScreen();
+	Brain.Screen.printAt(1, 40, "Select Auton then Press Go");
+	Brain.Screen.printAt(1, 200, "Auton Selected =  %d   ", AutonSelected);
+	Brain.Screen.setFillColor(red);
+	Brain.Screen.drawRectangle(20, 50, 100, 100);
+	Brain.Screen.drawCircle(300, 75, 25);
+	Brain.Screen.printAt(25, 75, "Select");
+	Brain.Screen.setFillColor(green);
+	Brain.Screen.drawRectangle(170, 50, 100, 100);
+	Brain.Screen.printAt(175, 75, "GO");
+	Brain.Screen.setFillColor(black);
 }
 
 void selectAuton() {
@@ -63,11 +61,11 @@ void selectAuton() {
 		
 		// check to see if buttons were pressed
 		if (x >= 20 && x <= 120 && y >= 50 && y <= 150){ // select button pressed
-				AutonSelected++;
-				if (AutonSelected > AutonMax){
-						AutonSelected = AutonMin; // rollover
-				}
-				Brain.Screen.printAt(1, 200, "Auton Selected =  %d   ", AutonSelected);
+      AutonSelected++;
+      if (AutonSelected > AutonMax){
+        AutonSelected = AutonMin; // rollover
+      }
+      Brain.Screen.printAt(1, 200, "Auton Selected =  %d   ", AutonSelected);
 		}
 		
 		
@@ -99,6 +97,7 @@ void stopDrive(){
 void mogoClamp(){ 
   clamp1.set(true);
 }
+
  void mogoUnclamp() { 
   clamp1.set(false);
  }
@@ -210,16 +209,16 @@ void GyroTurn(float target){
 
 void pre_auton(void) {
   // Initializing Robot Configuration. DO NOT REMOVE!
-	vexcodeInit();
 	Brain.Screen.printAt(1, 40, "pre auton is running");
 	drawGUI();
+  wait(5000, msec);
 	Brain.Screen.pressed(selectAuton);
   // All activities that occur before the competition starts
   // Example: clearing encoders, setting servo positions, ...
   Gyro1.calibrate();
   while(Gyro1.isCalibrating()){
     wait(10, msec);
-    // :)
+    /*  :)  */
   }
 }
 
@@ -241,9 +240,6 @@ void autonomous(void) {
   wait(200, msec);
   PinchDrive(24); */
 
-  // auton selector (GUI) testing
-  drawGUI();
-
   // auton
   /*mogoUnclamp();
   PinchDrive(-27);
@@ -261,33 +257,43 @@ void autonomous(void) {
   GyroTurn(180)
   PinchDrive(40);*/
 
-switch (AutonSelected) {
-	case 0:
-		//code 0 - left side passive
-    mogoUnclamp();
-    PinchDrive(-27);
-    mogoClamp();
-    wait(250, msec);
-    intake.spin(fwd, 100, pct);
-    conveyorBelt.spin(fwd, 100, pct);
-    wait(1.5, sec);
-    GyroTurn(75);
-    wait(300, msec);
-    PinchDrive(24);
-	break;
+  switch (AutonSelected) {
+    case 0:
+      //code 0 - left side passive
+      mogoUnclamp();
+      PinchDrive(-27);
+      mogoClamp();
+      wait(250, msec);
+      intake.spin(fwd, 100, pct);
+      conveyorBelt.spin(fwd, 100, pct);
+      wait(1.5, sec);
+      GyroTurn(75);
+      wait(300, msec);
+      PinchDrive(24);
+      break;
 				
-	case 1:
-	  //code 1 - left side aggresive
+    case 1:
+      //code 1 - left side aggresive
 
-	break;
+      break;
 				
-	case 2:
-		//code 2 - right side passive
-	break;
+    case 2:
+      //code 2 - right side passive  mogoUnclamp();
+      mogoUnclamp();
+      PinchDrive(-27);
+      mogoClamp();
+      wait(250, msec);
+      intake.spin(fwd, 100, pct);
+      conveyorBelt.spin(fwd, 100, pct);
+      wait(1.5, sec);
+      GyroTurn(-75);
+      wait(300, msec);
+      PinchDrive(24);
+      break;
 			
-	case 3:
-		//code 3 -  right side aggresive
-	break;
+    case 3:
+      //code 3 -  right side aggresive
+      break;
   }
 }
 
