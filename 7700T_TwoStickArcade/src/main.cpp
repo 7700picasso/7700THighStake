@@ -211,7 +211,6 @@ void pre_auton(void) {
   // Initializing Robot Configuration. DO NOT REMOVE!
 	Brain.Screen.printAt(1, 40, "pre auton is running");
 	drawGUI();
-  wait(5000, msec);
 	Brain.Screen.pressed(selectAuton);
   // All activities that occur before the competition starts
   // Example: clearing encoders, setting servo positions, ...
