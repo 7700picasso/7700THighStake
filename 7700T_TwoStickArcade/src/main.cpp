@@ -35,24 +35,58 @@ inertial Gyro1 = inertial(PORT13);
 
 // Auton Selector (GUI)
 int AutonSelected = 0;
-int AutoMin = 0;
+int AutonMin = 0;
 int AutonMax = 4;
-void drawGUI() {
+void drawGUI(){
   Brain.Screen.clearScreen();
-  Brain.Screen.printAt(120, 20, "LPassive");
   Brain.Screen.setFillColor(red);
   Brain.Screen.drawRectangle(5, 5, 220, 100);
+  Brain.Screen.setPenColor(black);
+  Brain.Screen.printAt(5, 20, "LPassive");
   Brain.Screen.setFillColor(green);
-  Brain.Screen.printAt(320, 20, "RPassive");
   Brain.Screen.drawRectangle(250, 5, 220, 100);
+  Brain.Screen.printAt(250, 20, "RPassive");
   Brain.Screen.setFillColor(blue);
-  Brain.Screen.printAt(120, 140, "LRush");
   Brain.Screen.drawRectangle(5, 121, 220, 100);
+  Brain.Screen.printAt(5, 136, "LRush");
   Brain.Screen.setFillColor(yellow);
-  Brain.Screen.printAt(320, 140, "RRush");
   Brain.Screen.drawRectangle(250, 121, 220, 100);
+  Brain.Screen.printAt(250, 136, "RRush");
+
 }
 
+void selectAuton() {
+		bool selectingAuton = true;
+		
+		int x = Brain.Screen.xPosition(); // get the x position of last touch of the screen
+		int y = Brain.Screen.yPosition(); // get the y position of last touch of the screen
+		
+		// check to see if buttons were pressed
+		if (x >= 20 && x <= 120 && y >= 50 && y <= 150){ // select button pressed
+				AutonSelected++;
+				if (AutonSelected > AutonMax){
+						AutonSelected = AutonMin; // rollover
+				}
+				Brain.Screen.printAt(1, 200, "Auton Selected =  %d   ", AutonSelected);
+		}
+		
+		
+		if (x >= 170 && x <= 270 && y >= 50 && y <= 150) {
+				selectingAuton = false; // GO button pressed
+				Brain.Screen.printAt(1, 200, "Auton  =  %d   GO           ", AutonSelected);
+		}
+		
+		if (!selectingAuton) {
+				Brain.Screen.setFillColor(green);
+				Brain.Screen.drawCircle(300, 75, 25);
+		} else {
+				Brain.Screen.setFillColor(red);
+				Brain.Screen.drawCircle(300, 75, 25);
+		}
+		
+		wait(10, msec); // slow it down
+		Brain.Screen.setFillColor(black);
+}
 
 void stopDrive(){
   LB.stop(brake);
@@ -175,11 +209,14 @@ void GyroTurn(float target){
 /*---------------------------------------------------------------------------*/
 
 void pre_auton(void) {
-Gyro1.calibrate();
-
-
+  // Initializing Robot Configuration. DO NOT REMOVE!
+	vexcodeInit();
+	Brain.Screen.printAt(1, 40, "pre auton is running");
+	drawGUI();
+	Brain.Screen.pressed(selectAuton);
   // All activities that occur before the competition starts
   // Example: clearing encoders, setting servo positions, ...
+  Gyro1.calibrate();
   while(Gyro1.isCalibrating()){
     wait(10, msec);
     // :)
@@ -223,6 +260,35 @@ void autonomous(void) {
   wait(300,msec);
   GyroTurn(180)
   PinchDrive(40);*/
+
+switch (AutonSelected) {
+	case 0:
+		//code 0 - left side passive
+    mogoUnclamp();
+    PinchDrive(-27);
+    mogoClamp();
+    wait(250, msec);
+    intake.spin(fwd, 100, pct);
+    conveyorBelt.spin(fwd, 100, pct);
+    wait(1.5, sec);
+    GyroTurn(75);
+    wait(300, msec);
+    PinchDrive(24);
+	break;
+				
+	case 1:
+	  //code 1 - left side aggresive
+
+	break;
+				
+	case 2:
+		//code 2 - right side passive
+	break;
+			
+	case 3:
+		//code 3 -  right side aggresive
+	break;
+  }
 }
 
   // ..........................................................................
