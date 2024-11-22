@@ -142,8 +142,8 @@ void PinchDrive(float target){
 void GyroTurn(float target){
   float theta = 0.0;
   float error = target - theta;
-  float accuracy = 0.5;
-  float kp = 1.00; 
+  float accuracy = 1.75;
+  float kp = 0.75; 
   float speed = kp*error;
   Gyro1.setRotation(0.0, deg);
   while(fabs(error) > accuracy){ 
@@ -185,7 +185,7 @@ void pre_auton(void) {
 void autonomous(void) {   
 // ..........................................................................
 
-// GyroTurn(-90);
+// GyroTurn(360);
 // Brain.Screen.printAt(10, 50, "Heading = %0.2f", Gyro1.rotation(deg));
 // GyroTurn testing
 /*GyroTurn(90);
@@ -221,12 +221,34 @@ mogoUnclamp();*/
 
 
 // auto skills from 1st comp day
-mogoUnclamp();
+/*mogoUnclamp();
 PinchDrive(-27);
 mogoClamp();
 time_drive(50, -50, 230);
-PinchDrive(-30);
+PinchDrive(-30);*/
 
+
+// first corner
+mogoUnclamp();
+PinchDrive(-5);
+mogoClamp();
+GyroTurn(105);
+conveyorBelt.spin(fwd, 100, pct);
+intake.spin(fwd, 100, pct);
+wait(250, msec);
+PinchDrive(35);
+GyroTurn(170);
+PinchDrive(-3.5);
+mogoUnclamp();
+
+//second corner
+wait(100,msec);
+PinchDrive(45);
+GyroTurn(-170);
+PinchDrive(-43);
+mogoClamp();
+GyroTurn(180);
+PinchDrive(48);
 }
 
   // ..........................................................................
