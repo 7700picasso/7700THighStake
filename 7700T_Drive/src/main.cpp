@@ -183,7 +183,7 @@ void autonomous(void) {
   PinchDrive(24); */
 
   // 15-sec autonomous
-  /* mogoUnclamp();
+  mogoUnclamp();
   PinchDrive(-27);
   mogoClamp();
   wait(250, msec);
@@ -194,10 +194,12 @@ void autonomous(void) {
   wait(0.5, sec);
   GyroTurn(190);
   wait(200, msec);
-  PinchDrive(22); */
+  PinchDrive(21.5);
+  GyroTurn(125);
+   
 
   // touch bar autonomous
-  mogoUnclamp();
+  /*mogoUnclamp();
   PinchDrive(-27);
   mogoClamp();
   wait(250, msec);
