@@ -193,8 +193,8 @@ void PinchDrive(float target){
 void GyroTurn(float target){
   float theta = 0.0;
   float error = target - theta;
-  float accuracy = 2.0;
-  float kp = 1.4;
+  float accuracy = 1.75;
+  float kp = 0.75;
   float speed = kp*error;
   Gyro1.setRotation(0.0, deg);
   while(fabs(error) >= accuracy){
@@ -260,15 +260,17 @@ void autonomous(void) {
     case 0:
       //code 0 - left side passive
       mogoUnclamp();
-      PinchDrive(-27);
+      PinchDrive(-30);
       mogoClamp();
       wait(250, msec);
       intake.spin(fwd, 100, pct);
       conveyorBelt.spin(fwd, 100, pct);
       wait(1.5, sec);
-      GyroTurn(75);
+      GyroTurn(100);
       wait(300, msec);
-      PinchDrive(24);
+      PinchDrive(23.5);
+      GyroTurn(172.5);
+      PinchDrive(43);
       break;
 				
     case 1:
@@ -279,15 +281,17 @@ void autonomous(void) {
     case 2:
       //code 2 - right side passive  mogoUnclamp();
       mogoUnclamp();
-      PinchDrive(-27);
+      PinchDrive(-30);
       mogoClamp();
       wait(250, msec);
       intake.spin(fwd, 100, pct);
       conveyorBelt.spin(fwd, 100, pct);
       wait(1.5, sec);
-      GyroTurn(-75);
+      GyroTurn(-100);
       wait(300, msec);
-      PinchDrive(24);
+      PinchDrive(23.5);
+      GyroTurn(172.5);
+      PinchDrive(43);
       break;
 			
     case 3:

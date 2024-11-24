@@ -230,22 +230,23 @@ PinchDrive(-30);*/
 
 // first corner
 mogoUnclamp();
-PinchDrive(-5);
+PinchDrive(-11);
 mogoClamp();
-GyroTurn(105);
+GyroTurn(112.5);
 conveyorBelt.spin(fwd, 100, pct);
 intake.spin(fwd, 100, pct);
 wait(250, msec);
-PinchDrive(35);
-GyroTurn(170);
-PinchDrive(-3.5);
+PinchDrive(38);
+wait(100, msec);
+GyroTurn(110);
+PinchDrive(-6);
 mogoUnclamp();
 
 //second corner
 wait(100,msec);
-PinchDrive(45);
-GyroTurn(-170);
-PinchDrive(-43);
+PinchDrive(10);
+GyroTurn(-100);
+PinchDrive(-72);
 mogoClamp();
 GyroTurn(180);
 PinchDrive(48);
