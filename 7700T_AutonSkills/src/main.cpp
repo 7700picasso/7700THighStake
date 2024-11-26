@@ -230,25 +230,39 @@ PinchDrive(-30);*/
 
 // first corner
 mogoUnclamp();
-PinchDrive(-5);
+PinchDrive(-7.75);
 mogoClamp();
-GyroTurn(105);
+GyroTurn(115.5);
+//turn to get L
 conveyorBelt.spin(fwd, 100, pct);
+//score preload
 intake.spin(fwd, 100, pct);
 wait(250, msec);
-PinchDrive(35);
-GyroTurn(170);
-PinchDrive(-3.5);
+PinchDrive(37.5);
+//collect two rings from L
+GyroTurn(112);
+PinchDrive(-6.5);
 mogoUnclamp();
+//put in corner
 
 //second corner
 wait(100,msec);
-PinchDrive(45);
-GyroTurn(-170);
-PinchDrive(-43);
+PinchDrive(10.2);
+GyroTurn(-115);
+//get ready to go to clamp second mogo
+PinchDrive(-76.5);
 mogoClamp();
-GyroTurn(180);
-PinchDrive(48);
+//clamp onto second mogo
+GyroTurn(175);
+//get ready to collect second L
+PinchDrive(44);
+//collect second L
+GyroTurn(-70);
+PinchDrive(-10);
+//go into corner
+mogoUnclamp();
+//put in corner
+
 }
 
   // ..........................................................................
