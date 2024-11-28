@@ -237,11 +237,12 @@ GyroTurn(115.5);
 conveyorBelt.spin(fwd, 100, pct);
 //score preload
 intake.spin(fwd, 100, pct);
-wait(250, msec);
-PinchDrive(37.5);
+wait(120, msec);
+PinchDrive(38.5);
 //collect two rings from L
 GyroTurn(112);
 PinchDrive(-6.5);
+wait(250, msec);
 mogoUnclamp();
 //put in corner
 
@@ -253,15 +254,18 @@ GyroTurn(-115);
 PinchDrive(-76.5);
 mogoClamp();
 //clamp onto second mogo
-GyroTurn(175);
+GyroTurn(170);
 //get ready to collect second L
 PinchDrive(44);
+PinchDrive(-18);
 //collect second L
-GyroTurn(-70);
-PinchDrive(-10);
+GyroTurn(87);
+PinchDrive(14);
 //go into corner
-mogoUnclamp();
+//mogoUnclamp();
 //put in corner
+
+
 
 }
 
