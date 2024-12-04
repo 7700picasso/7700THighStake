@@ -249,19 +249,20 @@ mogoUnclamp();
 //second corner
 wait(100,msec);
 PinchDrive(10.2);
-GyroTurn(-115);
+GyroTurn(-112);
 //get ready to go to clamp second mogo
 PinchDrive(-76.5);
 mogoClamp();
 //clamp onto second mogo
-GyroTurn(170);
+GyroTurn(180);
 //get ready to collect second L
 PinchDrive(44);
-PinchDrive(-18);
+PinchDrive(-10);
 //collect second L
-GyroTurn(87);
-PinchDrive(14);
+GyroTurn(-130);
+PinchDrive(-10);
 //go into corner
+
 //mogoUnclamp();
 //put in corner
 
