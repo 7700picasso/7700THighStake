@@ -227,21 +227,22 @@ mogoClamp();
 time_drive(50, -50, 230);
 PinchDrive(-30);*/
 
-
+// fixing one
 // first corner
 mogoUnclamp();
 PinchDrive(-7.75);
 mogoClamp();
-GyroTurn(115.5);
+GyroTurn(120);
 //turn to get L
 conveyorBelt.spin(fwd, 100, pct);
 //score preload
 intake.spin(fwd, 100, pct);
 wait(120, msec);
-PinchDrive(38.5);
+PinchDrive(39.25);
 //collect two rings from L
-GyroTurn(112);
-PinchDrive(-6.5);
+PinchDrive(-5);
+GyroTurn(107);
+PinchDrive(-12);
 wait(250, msec);
 mogoUnclamp();
 //put in corner
@@ -249,12 +250,12 @@ mogoUnclamp();
 //second corner
 wait(100,msec);
 PinchDrive(10.2);
-GyroTurn(-112);
+GyroTurn(-121);
 //get ready to go to clamp second mogo
 PinchDrive(-76.5);
 mogoClamp();
 //clamp onto second mogo
-GyroTurn(180);
+GyroTurn(174);
 //get ready to collect second L
 PinchDrive(44);
 PinchDrive(-10);
@@ -263,7 +264,81 @@ GyroTurn(-130);
 PinchDrive(-10);
 //go into corner
 
-//mogoUnclamp();
+// old one
+// // first corner
+// mogoUnclamp();
+// PinchDrive(-7.75);
+// mogoClamp();
+// GyroTurn(120);
+// //turn to get L
+// conveyorBelt.spin(fwd, 100, pct);
+// //score preload
+// intake.spin(fwd, 100, pct);
+// wait(120, msec);
+// PinchDrive(38.5);
+// //collect two rings from L
+// GyroTurn(112);
+// PinchDrive(-6.5);
+// wait(250, msec);
+// mogoUnclamp();
+// //put in corner
+
+// fart edition
+// //second corner
+// wait(100,msec);
+// PinchDrive(10.2);
+// GyroTurn(-116);
+// //get ready to go to clamp second mogo
+// PinchDrive(-76.5);
+// mogoClamp();
+// //clamp onto second mogo
+// GyroTurn(174);
+// //get ready to collect second L
+// PinchDrive(44);
+// PinchDrive(-10);
+// //collect second L
+// GyroTurn(-130);
+// PinchDrive(-10);
+// //go into corner
+
+// // first corner
+// mogoUnclamp();
+// PinchDrive(-7.75);
+// mogoClamp();
+// GyroTurn(120);
+// //turn to get L
+// conveyorBelt.spin(fwd, 100, pct);
+// //score preload
+// intake.spin(fwd, 100, pct);
+// wait(120, msec);
+// PinchDrive(38.5);
+// //collect two rings from L
+// GyroTurn(112);
+// PinchDrive(-6.5);
+// wait(250, msec);
+// mogoUnclamp();
+// //put in corner
+
+// //second corner
+// wait(100,msec);
+// PinchDrive(10.2);
+// GyroTurn(-116);
+// //get ready to go to clamp second mogo
+// PinchDrive(-76.5);
+// mogoClamp();
+// //clamp onto second mogo
+// GyroTurn(175);
+// //get ready to collect second L
+// PinchDrive(42.5);
+// //collect L
+// PinchDrive(-13);
+// GyroTurn(-90);
+// //get ready to get fart
+// PinchDrive(25);
+// //collect fart
+
+
+//mogoUnclamp ();
 //put in corner
 
 
