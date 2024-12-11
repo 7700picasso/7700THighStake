@@ -260,7 +260,7 @@ void autonomous(void) {
     case 0:
       //code 0 - left side passive
       mogoUnclamp();
-      PinchDrive(-30);
+      PinchDrive(-32);
       mogoClamp();
       wait(250, msec);
       intake.spin(fwd, 100, pct);
