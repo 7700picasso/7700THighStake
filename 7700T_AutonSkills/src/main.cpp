@@ -231,45 +231,46 @@ PinchDrive(-30);*/
 // first corner
 mogoUnclamp();
 PinchDrive(-7.75);
-PinchDrive(-11);
 mogoClamp();
-GyroTurn(120);
+GyroTurn(117.5);
 //turn to get L
 conveyorBelt.spin(fwd, 100, pct);
 //score preload
 intake.spin(fwd, 100, pct);
-wait(120, msec);
-PinchDrive(39.25);
+wait(250, msec);
+PinchDrive(41);
 //collect two rings from L
 PinchDrive(-5);
-GyroTurn(107);
-PinchDrive(-12);
-wait(120, msec);
-PinchDrive(39.25);
+GyroTurn(108.5);
+PinchDrive(-10);
 //collect two rings from L
-PinchDrive(-5);
-GyroTurn(107);
-PinchDrive(-12);
 wait(250, msec);
 mogoUnclamp();
 //put in corner
 
 //second corner
 wait(100,msec);
-PinchDrive(10.2);
-GyroTurn(-121);
+PinchDrive(10);
+GyroTurn(-123.5); //-125
+time_drive(60, 60, 750);
 //get ready to go to clamp second mogo
-PinchDrive(-76.5);
+PinchDrive(-82);
 mogoClamp();
 //clamp onto second mogo
 GyroTurn(174);
 //get ready to collect second L
 PinchDrive(44);
-PinchDrive(-10);
+PinchDrive(-8.5);
 //collect second L
 GyroTurn(-130);
 PinchDrive(-10);
+mogoUnclamp();
 //go into corner
+
+// push right side mobile goal into corner
+PinchDrive(11.5);
+GyroTurn(85);
+PinchDrive(108);
 
 // old one
 // // first corner
