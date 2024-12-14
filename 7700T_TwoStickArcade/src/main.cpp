@@ -273,6 +273,7 @@ void autonomous(void) {
       conveyorBelt.stop(brake);
       GyroTurn(172.5);
       PinchDrive(43);
+      conveyorBelt.spin(fwd, 100, pct);
       break;
 				
     case 1:

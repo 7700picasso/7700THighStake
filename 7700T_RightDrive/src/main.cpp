@@ -204,12 +204,14 @@ void autonomous(void) {
   conveyorBelt.spin(fwd, 100, pct);
   wait(1.5, sec);
   GyroTurn(-100);
-  wait(300, msec);
+  wait(600, msec);
   PinchDrive(23.5);
-  GyroTurn(172.5);
   intake.stop(brake);
   conveyorBelt.stop(brake);
+  wait(450, msec);
+  GyroTurn(172.5);
   PinchDrive(43);
+  conveyorBelt.spin(fwd, 100, pct);
   /*
   wait(300,msec);
   GyroTurn(180);

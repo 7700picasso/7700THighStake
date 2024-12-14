@@ -198,7 +198,7 @@ void autonomous(void) {
    
 
   // touch bar autonomous
-  mogoUnclamp();
+ mogoUnclamp();
   PinchDrive(-30);
   mogoClamp();
   wait(250, msec);
@@ -207,12 +207,16 @@ void autonomous(void) {
   wait(1.5, sec);
   GyroTurn(100);
   wait(300, msec);
-  PinchDrive(23.5);
-  GyroTurn(172.5);
+ PinchDrive(23.5);
+  intake.spin(fwd, 0, pct);
+  conveyorBelt.spin(fwd, 0, pct);
+/*
   intake.stop(brake);
-  conveyorBelt.stop(brake);
-  PinchDrive(43);
-
+  conveyorBelt.stop(brake);*/
+  wait(300, msec);
+   GyroTurn(172.5);
+   PinchDrive(43);
+  conveyorBelt.spin(fwd, 100, pct);
   /*wait(300,msec);
   GyroTurn(130);
   PinchDrive(40);*/
