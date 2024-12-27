@@ -227,12 +227,12 @@ mogoClamp();
 time_drive(50, -50, 230);
 PinchDrive(-30);*/
 
-// fixing one
+/*// fixing one
 // first corner
 mogoUnclamp();
-PinchDrive(-7.75);
+PinchDrive(-8.253);
 mogoClamp();
-GyroTurn(117.5);
+GyroTurn(115);
 //turn to get L
 conveyorBelt.spin(fwd, 100, pct);
 //score preload
@@ -241,7 +241,7 @@ wait(250, msec);
 PinchDrive(41);
 //collect two rings from L
 PinchDrive(-5);
-GyroTurn(108.5);
+GyroTurn(111);
 PinchDrive(-10);
 //collect two rings from L
 wait(250, msec);
@@ -254,13 +254,75 @@ PinchDrive(10);
 GyroTurn(-123.5); //-125
 time_drive(60, 60, 750);
 //get ready to go to clamp second mogo
-PinchDrive(-82);
+PinchDrive(-83);
 mogoClamp();
 //clamp onto second mogo
 GyroTurn(174);
 //get ready to collect second L
 PinchDrive(44);
 PinchDrive(-8.5);
+//collect second L
+GyroTurn(-130);
+PinchDrive(-10);
+mogoUnclamp();
+//go into corner
+
+// push right side mobile goal into corner
+PinchDrive(11.5);
+GyroTurn(85);
+PinchDrive(108);
+*/
+
+// new align
+// fixing one
+// first corner
+mogoUnclamp();
+PinchDrive(-8.5);
+mogoClamp();
+GyroTurn(115);
+//turn to get L
+conveyorBelt.spin(fwd, 60, pct);
+//score preload
+intake.spin(fwd, 100, pct);
+wait(250, msec);
+time_drive(50,50,1500);
+intake.spin(fwd, 0, pct);
+time_drive(50,50,250);
+intake.spin(fwd, 100, pct);
+conveyorBelt.spin(fwd, 100, pct);
+// PinchDrive(41);
+//collect two rings from L
+PinchDrive(-5);
+GyroTurn(111);
+PinchDrive(-10);
+//collect two rings from L
+wait(250, msec);
+mogoUnclamp();
+//put in corner
+
+//second corner
+wait(100,msec);
+PinchDrive(8);
+GyroTurn(-120); //-125
+intake.spin(fwd, 0, pct);
+time_drive(60, 60, 750);
+intake.spin(fwd, 100, pct);
+//get ready to go to clamp second mogo
+PinchDrive(-83);
+mogoClamp();
+//clamp onto second mogo
+GyroTurn(174);
+//get ready to collect second L
+intake.spin(fwd, 100, pct);
+wait(250, msec);
+time_drive(50,50,1500);
+intake.spin(fwd, 0, pct);
+time_drive(50,50,250);
+intake.spin(fwd, 100, pct);
+conveyorBelt.spin(fwd, 100, pct);
+PinchDrive(-5);
+//PinchDrive(44);
+//PinchDrive(-8.5);
 //collect second L
 GyroTurn(-130);
 PinchDrive(-10);
