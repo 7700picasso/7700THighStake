@@ -26,6 +26,8 @@ motor LB = motor(PORT7, ratio6_1, true);
 motor RB = motor(PORT2, ratio6_1, false);
 motor intake = motor(PORT16, ratio18_1, true);
 motor conveyorBelt = motor(PORT12, ratio18_1, false);
+motor ladybrown = motor(PORT4, ratio18_1, true);
+motor ladybrown2 = motor(PORT8, ratio18_1, false);
 digital_out clamp1(Brain.ThreeWirePort.A);
 digital_out doinker1(Brain.ThreeWirePort.B);
 inertial Gyro1 = inertial(PORT13);
@@ -290,11 +292,24 @@ void usercontrol(void){
       }
       */
       
-
+      // lady brown
+      if(Controller1.ButtonB.pressing()){
+        ladybrown.spin(fwd, 100, pct);
+        ladybrown2.spin(fwd, 100, pct);
+      }
+      else if(Controller1.ButtonX.pressing()){
+        ladybrown.spin(reverse, 100, pct);
+        ladybrown2.spin(reverse, 100, pct);
+      }
+      else{
+       ladybrown.stop(brake);
+       ladybrown2.stop(brake);
+      }
+    
     
 
     wait(20, msec); // Sleep the task for a short amount of time to
-                    // prevent wasted resources
+                    // prevent wwasted resources
   }
 }
 
