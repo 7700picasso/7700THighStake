@@ -305,6 +305,15 @@ void usercontrol(void){
        ladybrown.stop(brake);
        ladybrown2.stop(brake);
       }
+
+      /*if(Controller1.ButtonA.pressing()){
+        ladybrown.spinToPosition(10, deg);
+        ladybrown2.spinToPosition(10, deg);
+      }
+      else{
+        ladybrown.stop(brake);
+        ladybrown2.stop(brake);
+      }*/
     
     
 

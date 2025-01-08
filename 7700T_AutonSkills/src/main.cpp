@@ -281,7 +281,7 @@ PinchDrive(-10);
 mogoClamp();
 GyroTurn(112);
 //turn to get L
-conveyorBelt.spin(fwd, 50, pct);
+conveyorBelt.spin(fwd, 100, pct);
 //score preload
 intake.spin(fwd, 100, pct);
 wait(250, msec);
