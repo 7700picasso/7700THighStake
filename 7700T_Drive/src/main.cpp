@@ -31,6 +31,7 @@ motor ladybrown2 = motor(PORT8, ratio18_1, false);
 digital_out clamp1(Brain.ThreeWirePort.A);
 digital_out doinker1(Brain.ThreeWirePort.B);
 inertial Gyro1 = inertial(PORT13);
+rotation rotation1 = rotation(PORT9, true);
 
 /*---------------------------------------------------------------------------*/
 /*                          Pre-Autonomous Functions                         */
@@ -152,6 +153,40 @@ void GyroTurn(float target){
   }
   stopDrive();
 }
+
+int numStates = 3;
+int currState = 0;
+int ladybrowntarget = 0;
+void nextState(){
+  currState += 1;
+  if(currState == 0){
+    ladybrowntarget = 0;
+  }
+  else if(currState == 1){
+    ladybrowntarget = 45;
+  }
+  else{
+    ladybrowntarget = 120;
+  }
+}
+
+void spin(){
+  rotation1.resetPosition();
+  float kp = 0.5;
+  float x = rotation1.angle(deg);
+  float boolean = 0;
+  while(boolean == 0){
+      x = rotation1.angle(deg);
+      float error = ladybrowntarget - x;
+      float speed = kp*error;
+      ladybrown.spin(fwd, speed, pct);
+      ladybrown2.spin(fwd, speed, pct);
+      if(x == ladybrowntarget){
+        boolean = 1;
+      }
+  }
+}
+
 /*---------------------------------------------------------------------------*/
 
 void pre_auton(void) {
@@ -291,9 +326,13 @@ void usercontrol(void){
        clamp1.set(false);
       }
       */
-      
+    
+      if(Controller1.ButtonX.PRESSED){
+        nextState();
+        spin();
+      }
       // lady brown
-      if(Controller1.ButtonB.pressing()){
+      /*if(Controller1.ButtonB.pressing()){
         ladybrown.spin(fwd, 100, pct);
         ladybrown2.spin(fwd, 100, pct);
       }
@@ -301,11 +340,23 @@ void usercontrol(void){
         ladybrown.spin(reverse, 100, pct);
         ladybrown2.spin(reverse, 100, pct);
       }
-      else{
+      else if(Controller1.ButtonA.pressing()){
+        rotation1.resetPosition();
+        float angle = rotation1.angle(deg);
+        ladybrown.spinToPosition(10, deg);
+        ladybrown2.spinToPosition(10, deg);
+        float x = rotation1.angle(deg);
+
+       /* while(x > 10){
+          ladybrown.spin
+        }
+      }*/
+     /* else{
        ladybrown.stop(brake);
        ladybrown2.stop(brake);
       }
-
+      } */
+    
       /*if(Controller1.ButtonA.pressing()){
         ladybrown.spinToPosition(10, deg);
         ladybrown2.spinToPosition(10, deg);
@@ -314,7 +365,6 @@ void usercontrol(void){
         ladybrown.stop(brake);
         ladybrown2.stop(brake);
       }*/
-    
     
 
     wait(20, msec); // Sleep the task for a short amount of time to
