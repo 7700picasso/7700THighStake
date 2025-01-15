@@ -154,7 +154,7 @@ void GyroTurn(float target){
   stopDrive();
 }
 
-int numStates = 3;
+int amountofstates = 3;
 int currState = 0;
 int ladybrowntarget = 0;
 void nextState(){
@@ -163,29 +163,27 @@ void nextState(){
     ladybrowntarget = 0;
   }
   else if(currState == 1){
-    ladybrowntarget = 45;
+    ladybrowntarget = 10;
   }
   else{
     ladybrowntarget = 120;
   }
 }
 
-void spin(){
+void ladybrown_turn(){
   rotation1.resetPosition();
   float kp = 0.5;
   float x = rotation1.angle(deg);
   float boolean = 0;
-  while(boolean == 0){
+  while(x < ladybrowntarget or x > ladybrowntarget){
       x = rotation1.angle(deg);
       float error = ladybrowntarget - x;
       float speed = kp*error;
-      ladybrown.spin(fwd, speed, pct);
-      ladybrown2.spin(fwd, speed, pct);
-      if(x == ladybrowntarget){
-        boolean = 1;
+      ladybrown.spin(reverse, speed, pct);
+      ladybrown2.spin(reverse, speed, pct);
+      wait(10, msec);
       }
   }
-}
 
 /*---------------------------------------------------------------------------*/
 
@@ -329,7 +327,7 @@ void usercontrol(void){
     
       if(Controller1.ButtonX.PRESSED){
         nextState();
-        spin();
+        ladybrown_turn();
       }
       // lady brown
       /*if(Controller1.ButtonB.pressing()){
