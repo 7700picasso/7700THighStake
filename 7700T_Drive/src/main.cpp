@@ -31,7 +31,10 @@ motor ladybrown2 = motor(PORT8, ratio18_1, false);
 digital_out clamp1(Brain.ThreeWirePort.A);
 digital_out doinker1(Brain.ThreeWirePort.B);
 inertial Gyro1 = inertial(PORT13);
-rotation rotation1 = rotation(PORT9, true);
+rotation rotation1 = rotation(PORT17, true);
+
+float armRotations[] = {0.0, -10.0, -90.0};
+int currentIndex = 0;
 
 /*---------------------------------------------------------------------------*/
 /*                          Pre-Autonomous Functions                         */
@@ -154,7 +157,7 @@ void GyroTurn(float target){
   stopDrive();
 }
 
-int amountofstates = 3;
+/*int amountofstates = 3;
 int currState = 0;
 int ladybrowntarget = 0;
 void nextState(){
@@ -166,24 +169,51 @@ void nextState(){
     ladybrowntarget = 10;
   }
   else{
-    ladybrowntarget = 120;
+    ladybrowntarget = 90;
   }
 }
 
 void ladybrown_turn(){
   rotation1.resetPosition();
   float kp = 0.5;
-  float x = rotation1.angle(deg);
-  float boolean = 0;
-  while(x < ladybrowntarget or x > ladybrowntarget){
-      x = rotation1.angle(deg);
+  float initial = rotation1.angle(deg);
+  float x = initial;
+  float accuracy = ladybrowntarget + 2.0;
+  while(x < accuracy or x > accuracy){
+      float changed = rotation1.position(deg);
+      x = changed - initial;
       float error = ladybrowntarget - x;
       float speed = kp*error;
       ladybrown.spin(reverse, speed, pct);
       ladybrown2.spin(reverse, speed, pct);
       wait(10, msec);
+      ladybrown.stop(brake);
+      ladybrown2.stop(brake);
+      x = rotation1.angle(deg);
+      error = ladybrowntarget - x;
+      speed = kp*error;
       }
+    ladybrown.stop(brake);
+    ladybrown2.stop(brake);
+  }*/
+
+void armRotationControl(float target){
+  float position = 0;
+  float accuracy = 0.1; //change if needed
+  float kp = 3.0; //change if needed
+  float error = target;
+  float speed = 0;
+  rotation1.resetPosition();
+  while(fabs(error) > accuracy){
+    position = rotation1.position(deg);
+    error = target - position;
+    speed = error * kp;
+    if(speed > 100) speed = 100;
+    if(speed < -100) speed = -100;
+    ladybrown.spin(fwd, speed, pct);
+    ladybrown2.spin(fwd, speed, pct);
   }
+}
 
 /*---------------------------------------------------------------------------*/
 
@@ -272,11 +302,12 @@ void autonomous(void) {
 
 void usercontrol(void){
   // User control code here, inside the loop
+  bool lastButtonPress = false;
   while (1) {
 
       //drive
       display();
-
+      Brain.Screen.printAt(10, 150, "Rotation: %0.2f", rotation1.position(deg));
       // drive
       int LeftJoystick = Controller1.Axis3.position(pct);
       int RightJoystick = Controller1.Axis2.position(pct);
@@ -315,6 +346,17 @@ void usercontrol(void){
         else if (Controller1.ButtonDown.PRESSED){
           doinker1.set(true); 
         }
+
+      // lady brown
+      if(Controller1.ButtonX.pressing() && !lastButtonPress){
+        currentIndex++;
+        if(currentIndex >= sizeof(armRotations) / sizeof(armRotations[0])){
+          currentIndex = 0;
+        }
+        armRotationControl(armRotations[currentIndex]);
+      }
+      lastButtonPress = Controller1.ButtonX.pressing();
+
         // delete comments up to here
         
         /*if(Controller1.ButtonL1.pressing()){
@@ -325,10 +367,9 @@ void usercontrol(void){
       }
       */
     
-      if(Controller1.ButtonX.PRESSED){
+     /* if(Controller1.ButtonX.PRESSED){
         nextState();
-        ladybrown_turn();
-      }
+        ladybrown_turn(); */
       // lady brown
       /*if(Controller1.ButtonB.pressing()){
         ladybrown.spin(fwd, 100, pct);
