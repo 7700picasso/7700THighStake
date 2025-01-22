@@ -242,28 +242,23 @@ Gyro1.calibrate();
 void autonomous(void) {   
   // ..........................................................................
 
-  // testing 
-  /*GyroTurn(90);
-  wait(200, msec);
-  PinchDrive(24); 
-*/
-  // 15-sec autonomous
- /*mogoUnclamp();
-  PinchDrive(-27);
-  mogoClamp();
-  wait(250, msec);
-  intake.spin(fwd, 100, pct);
-  conveyorBelt.spin(fwd, 100, pct);
-  wait(1.5, sec);
-  conveyorBelt.spinToPosition(220, deg);   
-  wait(0.5, sec);
-  GyroTurn(190);
-  wait(200, msec);
-  PinchDrive(22);*/
-   
+
+PinchDrive(-39.2);
+GyroTurn(-40);
+PinchDrive(-13);
+mogoClamp();
+wait(250, msec);
+intake.spin(fwd, 100, pct);
+conveyorBelt.spin(fwd, 100, pct);
+PinchDrive(50.2);
+mogoUnclamp();
+
+
+
+
 
   // touch bar autonomous
- mogoUnclamp();
+ /*mogoUnclamp();
   PinchDrive(-30);
   mogoClamp();
   wait(250, msec);
@@ -278,13 +273,12 @@ void autonomous(void) {
 /*
   intake.stop(brake);
   conveyorBelt.stop(brake);*/
-  wait(300, msec);
+  /*wait(300, msec);
    GyroTurn(172.5);
    PinchDrive(43);
-  conveyorBelt.spin(fwd, 100, pct);
-  /*wait(300,msec);
-  GyroTurn(130);
-  PinchDrive(40);*/
+  conveyorBelt.spin(fwd, 100, pct);*/
+
+
 
 }
 
