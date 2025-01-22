@@ -38,7 +38,7 @@ inertial Gyro1 = inertial(PORT13);
 // Auton Selector (GUI)
 int AutonSelected = 0;
 int AutonMin = 0;
-int AutonMax = 4;
+int AutonMax = 1;
 
 void drawGUI(){
 	// Draws 2 buttons to be used for selecting auto
@@ -137,7 +137,6 @@ void MotorDisplay(double y, double current, double temp){
 }
 
 void display(){
-  Brain.Screen.clearScreen();
   double LMCurrent = LM.current(amp);
   double LMTemp = LM.temperature(celsius);
   double LBCurrent = LB.current(amp);
@@ -146,6 +145,12 @@ void display(){
   double RMTemp = RM.temperature(celsius);
   double RBCurrent = RB.current(amp);
   double RBTemp = RB.temperature(celsius);
+  double IntakeTemp = intake.temperature(celsius);
+  double IntakeCurrent = intake.current(amp);
+  double ladyBrown2Current = ladybrown2.current(amp);
+  double ladyBrown2Temp = ladybrown2.temperature(celsius);
+  double ladyBrownCurrent = ladybrown.current(amp);
+  double ladyBrownTemp = ladybrown.temperature(celsius);
 
   if(LM.installed()){
     MotorDisplay(1, LMCurrent, LMTemp);
@@ -174,6 +179,27 @@ void display(){
   }
   else
   Brain.Screen.printAt(5, YOFFSET + 91, "RightBack Problem");
+
+  if(intake.installed()){
+    MotorDisplay(121, IntakeCurrent, IntakeTemp);
+    Brain.Screen.printAt(300, YOFFSET + 121, "Intake");
+  }
+  else
+  Brain.Screen.printAt(5, YOFFSET + 121, "Intake Problem");
+
+  if(ladybrown.installed()){
+    MotorDisplay(151, ladyBrownCurrent, ladyBrownTemp);
+    Brain.Screen.printAt(300, YOFFSET + 151, "LadyBrown1");
+  }
+  else
+  Brain.Screen.printAt(5, YOFFSET + 151, "LadyBrown1 Problem");
+
+  if(ladybrown2.installed()){
+    MotorDisplay(181, ladyBrown2Current, ladyBrown2Temp);
+    Brain.Screen.printAt(300, YOFFSET + 181, "LadyBrown2");
+  }
+  else
+  Brain.Screen.printAt(5, YOFFSET + 181, "LadyBrown2 Problem");
 }
 
 void PinchDrive(float target){
@@ -279,29 +305,24 @@ void autonomous(void) {
       break;
 				
     case 1:
-      //code 1 - left side aggresive
-
-      break;
-				
-    case 2:
       //code 2 - right side passive  mogoUnclamp();
-      mogoUnclamp();
-      PinchDrive(-30);
-      mogoClamp();
-      wait(250, msec);
-      intake.spin(fwd, 100, pct);
-      conveyorBelt.spin(fwd, 100, pct);
-      wait(1.5, sec);
-      GyroTurn(-100);
-      wait(300, msec);
-      PinchDrive(23.5);
-      GyroTurn(172.5);
-      PinchDrive(43);
-      break;
-			
-    case 3:
-      //code 3 -  right side aggresive
-      break;
+    mogoUnclamp();
+    PinchDrive(-27);
+    mogoClamp();
+    wait(250, msec);
+    intake.spin(fwd, 100, pct);
+    conveyorBelt.spin(fwd, 100, pct);
+    wait(1.5, sec);
+    GyroTurn(-75);
+    wait(300, msec);
+    PinchDrive(24);
+    intake.stop(brake);
+    conveyorBelt.stop(brake);
+    wait(300,msec);
+    GyroTurn(180);
+    PinchDrive(40);
+    conveyorBelt.spin(fwd, 100, pct);
+    break;
   }
 }
 

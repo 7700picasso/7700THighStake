@@ -39,13 +39,65 @@ int currentIndex = 0;
 /*---------------------------------------------------------------------------*/
 /*                          Pre-Autonomous Functions                         */
 
+// Auton Selector (GUI)
+int AutonSelected = 0;
+int AutonMin = 0;
+int AutonMax = 1;
+
+void drawGUI(){
+	// Draws 2 buttons to be used for selecting auto
+	Brain.Screen.clearScreen();
+	Brain.Screen.printAt(1, 40, "Select Auton then Press Go");
+	Brain.Screen.printAt(1, 200, "Auton Selected =  %d   ", AutonSelected);
+	Brain.Screen.setFillColor(red);
+	Brain.Screen.drawRectangle(20, 50, 100, 100);
+	Brain.Screen.drawCircle(300, 75, 25);
+	Brain.Screen.printAt(25, 75, "Select");
+	Brain.Screen.setFillColor(green);
+	Brain.Screen.drawRectangle(170, 50, 100, 100);
+	Brain.Screen.printAt(175, 75, "GO");
+	Brain.Screen.setFillColor(black);
+}
+
+void selectAuton() {
+		bool selectingAuton = true;
+		
+		int x = Brain.Screen.xPosition(); // get the x position of last touch of the screen
+		int y = Brain.Screen.yPosition(); // get the y position of last touch of the screen
+		
+		// check to see if buttons were pressed
+		if (x >= 20 && x <= 120 && y >= 50 && y <= 150){ // select button pressed
+      AutonSelected++;
+      if (AutonSelected > AutonMax){
+        AutonSelected = AutonMin; // rollover
+      }
+      Brain.Screen.printAt(1, 200, "Auton Selected =  %d   ", AutonSelected);
+		}
+		
+		
+		if (x >= 170 && x <= 270 && y >= 50 && y <= 150) {
+				selectingAuton = false; // GO button pressed
+				Brain.Screen.printAt(1, 200, "Auton  =  %d   GO           ", AutonSelected);
+		}
+		
+		if (!selectingAuton) {
+				Brain.Screen.setFillColor(green);
+				Brain.Screen.drawCircle(300, 75, 25);
+		} else {
+				Brain.Screen.setFillColor(red);
+				Brain.Screen.drawCircle(300, 75, 25);
+		}
+		
+		wait(10, msec); // slow it down
+		Brain.Screen.setFillColor(black);
+}
+
 void stopDrive(){
   LB.stop(brake);
   RB.stop(brake);
   LM.stop(brake);
   RM.stop(brake);
 }
-
 
 void mogoClamp(){ 
   clamp1.set(true);
@@ -95,6 +147,12 @@ void display(){
   double RMTemp = RM.temperature(celsius);
   double RBCurrent = RB.current(amp);
   double RBTemp = RB.temperature(celsius);
+  double IntakeTemp = intake.temperature(celsius);
+  double IntakeCurrent = intake.current(amp);
+  double ladyBrown2Current = ladybrown2.current(amp);
+  double ladyBrown2Temp = ladybrown2.temperature(celsius);
+  double ladyBrownCurrent = ladybrown.current(amp);
+  double ladyBrownTemp = ladybrown.temperature(celsius);
 
   if(LM.installed()){
     MotorDisplay(1, LMCurrent, LMTemp);
@@ -123,6 +181,27 @@ void display(){
   }
   else
   Brain.Screen.printAt(5, YOFFSET + 91, "RightBack Problem");
+
+  if(intake.installed()){
+    MotorDisplay(121, IntakeCurrent, IntakeTemp);
+    Brain.Screen.printAt(300, YOFFSET + 121, "Intake");
+  }
+  else
+  Brain.Screen.printAt(5, YOFFSET + 121, "Intake Problem");
+
+  if(ladybrown.installed()){
+    MotorDisplay(151, ladyBrownCurrent, ladyBrownTemp);
+    Brain.Screen.printAt(300, YOFFSET + 151, "LadyBrown1");
+  }
+  else
+  Brain.Screen.printAt(5, YOFFSET + 151, "LadyBrown1 Problem");
+
+  if(ladybrown2.installed()){
+    MotorDisplay(181, ladyBrown2Current, ladyBrown2Temp);
+    Brain.Screen.printAt(300, YOFFSET + 181, "LadyBrown2");
+  }
+  else
+  Brain.Screen.printAt(5, YOFFSET + 181, "LadyBrown2 Problem");
 }
 
 void PinchDrive(float target){
@@ -269,7 +348,7 @@ mogoUnclamp();
   wait(300, msec);
  PinchDrive(23.5);
   intake.spin(fwd, 0, pct);
-  conveyorBelt.spin(fwd, 0, pct);
+  conveyorBelt.spin(fwd, 0, pct);*/
 /*
   intake.stop(brake);
   conveyorBelt.stop(brake);*/
@@ -277,8 +356,55 @@ mogoUnclamp();
    GyroTurn(172.5);
    PinchDrive(43);
   conveyorBelt.spin(fwd, 100, pct);*/
+<<<<<<< HEAD
 
 
+=======
+  /*wait(300,msec);
+  GyroTurn(130);
+  PinchDrive(40);*/
+   switch (AutonSelected) {
+    case 0:
+      //code 0 - left side passive
+      mogoUnclamp();
+      PinchDrive(-30);
+      mogoClamp();
+      wait(250, msec);
+      intake.spin(fwd, 100, pct);
+      conveyorBelt.spin(fwd, 100, pct);
+      wait(1.5, sec);
+      GyroTurn(100);
+      wait(300, msec);
+      PinchDrive(23.5);
+      intake.spin(fwd, 0, pct);
+      conveyorBelt.spin(fwd, 0, pct);
+      wait(300, msec);
+      GyroTurn(172.5);
+      PinchDrive(43);
+      conveyorBelt.spin(fwd, 100, pct);
+      break;
+				
+    case 1:
+      //code 2 - right side passive  mogoUnclamp();
+      mogoUnclamp();
+      PinchDrive(-30);
+      mogoClamp();
+      wait(250, msec);
+      intake.spin(fwd, 100, pct);
+      conveyorBelt.spin(fwd, 100, pct);
+      wait(1.5, sec);
+      GyroTurn(-100);
+      wait(600, msec);
+      PinchDrive(23.5);
+      intake.stop(brake);
+      conveyorBelt.stop(brake);
+      wait(450, msec);
+      GyroTurn(172.5);
+      PinchDrive(43);
+      conveyorBelt.spin(fwd, 100, pct);
+    break;
+  }
+>>>>>>> b22f62d5b49b6f85f9f4533c37537498b1b2055f
 
 }
 
@@ -301,7 +427,7 @@ void usercontrol(void){
 
       //drive
       display();
-      Brain.Screen.printAt(10, 150, "Rotation: %0.2f", rotation1.position(deg));
+      Brain.Screen.printAt(10, 211, "Rotation: %0.2f", rotation1.position(deg));
       // drive
       int LeftJoystick = Controller1.Axis3.position(pct);
       int RightJoystick = Controller1.Axis2.position(pct);
