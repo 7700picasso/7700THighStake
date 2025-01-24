@@ -31,6 +31,7 @@ motor ladybrown2 = motor(PORT8, ratio18_1, false);
 digital_out clamp1(Brain.ThreeWirePort.A);
 digital_out doinker1(Brain.ThreeWirePort.B);
 inertial Gyro1 = inertial(PORT13);
+rotation rotation1 = rotation(PORT17);
 
 /*---------------------------------------------------------------------------*/
 /*                          Pre-Autonomous Functions                         */
@@ -322,7 +323,7 @@ void usercontrol(void){
   while (1) {
 
       display();
-
+      Brain.Screen.printAt(10, 150, "Rotation: %0.2f", rotation1.position(deg));
       // drive
       int LeftJoystick = Controller1.Axis3.position(pct);
       int RightJoystick = Controller1.Axis1.position(pct);
@@ -395,6 +396,7 @@ void usercontrol(void){
 //
 int main(){
   // Set up callbacks for autonomous and driver control periods.
+  rotation1.resetPosition();
   Competition.autonomous(autonomous);
   Competition.drivercontrol(usercontrol);
 

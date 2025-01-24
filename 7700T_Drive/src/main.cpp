@@ -33,7 +33,7 @@ digital_out doinker1(Brain.ThreeWirePort.B);
 inertial Gyro1 = inertial(PORT13);
 rotation rotation1 = rotation(PORT17, true);
 
-float armRotations[] = {0.0, -10.0, -90.0};
+float armRotations[] = {0.0, -20.0, -90.0};
 int currentIndex = 0;
 
 /*---------------------------------------------------------------------------*/
@@ -87,6 +87,7 @@ void MotorDisplay(double y, double current, double temp){
 }
 
 void display(){
+  Brain.Screen.printAt(10, 150, "Rotation: %0.2f", rotation1.position(deg));
   double LMCurrent = LM.current(amp);
   double LMTemp = LM.temperature(celsius);
   double LBCurrent = LB.current(amp);
@@ -198,9 +199,10 @@ void ladybrown_turn(){
   }*/
 
 void armRotationControl(float target){
+  // rotation1.setPosition(0, deg);
   float position = 0;
   float accuracy = 0.1; //change if needed
-  float kp = 3.0; //change if needed
+  float kp = 1.1; //change if needed
   float error = target;
   float speed = 0;
   rotation1.resetPosition();
@@ -220,7 +222,7 @@ void armRotationControl(float target){
 void pre_auton(void) {
 Gyro1.calibrate();
 
-
+// rotation1.setPosition(0, deg);
   // All activities that occur before the competition starts
   // Example: clearing encoders, setting servo positions, ...
   while(Gyro1.isCalibrating()){
@@ -302,12 +304,12 @@ void autonomous(void) {
 
 void usercontrol(void){
   // User control code here, inside the loop
-  bool lastButtonPress = false;
+  // bool lastButtonPress = false;
+  // rotation1.setPosition(0, deg);
   while (1) {
 
       //drive
       display();
-      Brain.Screen.printAt(10, 150, "Rotation: %0.2f", rotation1.position(deg));
       // drive
       int LeftJoystick = Controller1.Axis3.position(pct);
       int RightJoystick = Controller1.Axis2.position(pct);
@@ -348,6 +350,8 @@ void usercontrol(void){
         }
 
       // lady brown
+      /*bool lastButtonPress = false;
+      rotation1.setPosition(0, deg);
       if(Controller1.ButtonX.pressing() && !lastButtonPress){
         currentIndex++;
         if(currentIndex >= sizeof(armRotations) / sizeof(armRotations[0])){
@@ -355,7 +359,8 @@ void usercontrol(void){
         }
         armRotationControl(armRotations[currentIndex]);
       }
-      lastButtonPress = Controller1.ButtonX.pressing();
+      lastButtonPress = Controller1.ButtonX.pressing();*/
+
 
         // delete comments up to here
         
@@ -367,11 +372,8 @@ void usercontrol(void){
       }
       */
     
-     /* if(Controller1.ButtonX.PRESSED){
-        nextState();
-        ladybrown_turn(); */
       // lady brown
-      /*if(Controller1.ButtonB.pressing()){
+      if(Controller1.ButtonB.pressing()){
         ladybrown.spin(fwd, 100, pct);
         ladybrown2.spin(fwd, 100, pct);
       }
@@ -379,43 +381,21 @@ void usercontrol(void){
         ladybrown.spin(reverse, 100, pct);
         ladybrown2.spin(reverse, 100, pct);
       }
-      else if(Controller1.ButtonA.pressing()){
-        rotation1.resetPosition();
-        float angle = rotation1.angle(deg);
-        ladybrown.spinToPosition(10, deg);
-        ladybrown2.spinToPosition(10, deg);
-        float x = rotation1.angle(deg);
-
-       /* while(x > 10){
-          ladybrown.spin
-        }
-      }*/
-     /* else{
+     else{
        ladybrown.stop(brake);
        ladybrown2.stop(brake);
-      }
-      } */
-    
-      /*if(Controller1.ButtonA.pressing()){
-        ladybrown.spinToPosition(10, deg);
-        ladybrown2.spinToPosition(10, deg);
-      }
-      else{
-        ladybrown.stop(brake);
-        ladybrown2.stop(brake);
-      }*/
-    
+      } 
 
     wait(20, msec); // Sleep the task for a short amount of time to
                     // prevent wwasted resources
   }
 }
-
 //
 // Main will set up the competition functions and callbacks.
 //
 int main(){
   // Set up callbacks for autonomous and driver control periods.
+  // rotation1.setPosition(0, deg);
   Competition.autonomous(autonomous);
   Competition.drivercontrol(usercontrol);
 
