@@ -331,6 +331,7 @@ time_drive(60, 60, 700);
 intake.spin(fwd, 100, pct);
 //get ready to go to clamp second mogo
 PinchDrive2(-83); // PinchDrive or PinchDrive2
+wait(250, msec);
 mogoClamp();
 //clamp onto second mogo
 GyroTurn(174);
