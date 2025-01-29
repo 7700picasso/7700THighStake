@@ -330,7 +330,7 @@ intake.spin(fwd, 0, pct);
 time_drive(60, 60, 700);
 intake.spin(fwd, 100, pct);
 //get ready to go to clamp second mogo
-PinchDrive2(-83); // PinchDrive or PinchDrive2
+PinchDrive(-83); // PinchDrive or PinchDrive2
 wait(250, msec);
 mogoClamp();
 //clamp onto second mogo
