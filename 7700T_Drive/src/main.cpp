@@ -33,7 +33,7 @@ digital_out doinker1(Brain.ThreeWirePort.B);
 inertial Gyro1 = inertial(PORT13);
 rotation rotation1 = rotation(PORT17, true);
 
-float armRotations[] = {0.0, -20.0, -90.0};
+float armRotations[] = {20.0, 150.0, 0.0};
 int currentIndex = 0;
 
 /*---------------------------------------------------------------------------*/
@@ -158,7 +158,7 @@ void GyroTurn(float target){
   stopDrive();
 }
 
-int amountofstates = 3;
+/*int amountofstates = 3;
 int currState = 0;
 int ladybrowntarget = 0;
 void nextState(){
@@ -175,6 +175,7 @@ void nextState(){
 }
 
 void ladybrown_turn(){
+printf("im super sigma /n");
   rotation1.resetPosition();
   float kp = 0.5;
   float initial = rotation1.angle(deg);
@@ -197,32 +198,40 @@ void ladybrown_turn(){
       }
     ladybrown.stop(brake);
     ladybrown2.stop(brake);
-  }
+  }*/
 
 void armRotationControl(float target){
+  printf("rotation: %f \n", target);
   // rotation1.setPosition(0, deg);
-  float position = 0;
-  float accuracy = 0.1; //change if needed
-  float kp = 1.1; //change if needed
-  float error = target;
+  float position = rotation1.position(deg);
+  float accuracy = 1.0; //change if needed
+  float kp = 1.8; //change if needed
+  float error = target - position;
   float speed = 0;
-  rotation1.resetPosition();
+  // rotation1.resetPosition();
+  int counter = 0;
   while(fabs(error) > accuracy){
     position = rotation1.position(deg);
     error = target - position;
     speed = error * kp;
     if(speed > 100) speed = 100;
     if(speed < -100) speed = -100;
-    ladybrown.spin(fwd, speed, pct);
-    ladybrown2.spin(fwd, speed, pct);
+    ladybrown.spin(reverse, speed, pct);
+    ladybrown2.spin(reverse, speed, pct);
+    if (counter++ % 10 == 0){
+      // printf("Rotation: %f, error: %f, speed: %f\n", position, error, speed);
+    }
+
   }
+    ladybrown.stop(brake);
+  ladybrown2.stop(brake);
 }
 
 /*---------------------------------------------------------------------------*/
 
 void pre_auton(void) {
 Gyro1.calibrate();
-
+rotation1.resetPosition();
 // rotation1.setPosition(0, deg);
   // All activities that occur before the competition starts
   // Example: clearing encoders, setting servo positions, ...
@@ -303,6 +312,7 @@ void autonomous(void) {
 /*  You must modify the code to add your own robot specific commands here.   */
 /*---------------------------------------------------------------------------*/
 
+bool lastButtonPress = false;
 void usercontrol(void){
   // User control code here, inside the loop
   // bool lastButtonPress = false;
@@ -351,16 +361,18 @@ void usercontrol(void){
         }
 
       // lady brown
-      /*bool lastButtonPress = false;
-      rotation1.setPosition(0, deg);
+      // rotation1.setPosition(0, deg);
       if(Controller1.ButtonX.pressing() && !lastButtonPress){
+        printf("x is pressed %d %f \n", currentIndex, armRotations[currentIndex]);
+        armRotationControl(armRotations[currentIndex]);
         currentIndex++;
         if(currentIndex >= sizeof(armRotations) / sizeof(armRotations[0])){
           currentIndex = 0;
         }
-        armRotationControl(armRotations[currentIndex]);
+        // armRotationControl(armRotations[currentIndex]);
+        // currentIndex++;
       }
-      lastButtonPress = Controller1.ButtonX.pressing();*/
+      lastButtonPress = Controller1.ButtonX.pressing();
 
 
         // delete comments up to here
@@ -374,7 +386,7 @@ void usercontrol(void){
       */
     
       // lady brown
-      if(Controller1.ButtonB.pressing()){
+      /*if(Controller1.ButtonB.pressing()){
         ladybrown.spin(fwd, 100, pct);
         ladybrown2.spin(fwd, 100, pct);
       }
@@ -385,7 +397,7 @@ void usercontrol(void){
      else{
        ladybrown.stop(brake);
        ladybrown2.stop(brake);
-      } 
+      }*/
 
     wait(20, msec); // Sleep the task for a short amount of time to
                     // prevent wwasted resources
