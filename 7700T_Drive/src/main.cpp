@@ -158,7 +158,7 @@ void GyroTurn(float target){
   stopDrive();
 }
 
-/*int amountofstates = 3;
+int amountofstates = 3;
 int currState = 0;
 int ladybrowntarget = 0;
 void nextState(){
@@ -188,15 +188,16 @@ void ladybrown_turn(){
       ladybrown.spin(reverse, speed, pct);
       ladybrown2.spin(reverse, speed, pct);
       wait(10, msec);
-      ladybrown.stop(brake);
-      ladybrown2.stop(brake);
+      // ladybrown.stop(brake);
+      // ladybrown2.stop(brake);
       x = rotation1.angle(deg);
       error = ladybrowntarget - x;
       speed = kp*error;
+      printf("Rotation: %3.2f, error: %3.2f, speed: %3.2f\n", x, error, speed);
       }
     ladybrown.stop(brake);
     ladybrown2.stop(brake);
-  }*/
+  }
 
 void armRotationControl(float target){
   // rotation1.setPosition(0, deg);
