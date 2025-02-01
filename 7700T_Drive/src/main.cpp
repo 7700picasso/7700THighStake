@@ -33,7 +33,7 @@ digital_out doinker1(Brain.ThreeWirePort.B);
 inertial Gyro1 = inertial(PORT13);
 rotation rotation1 = rotation(PORT17, true);
 
-float armRotations[] = {20.0, 150.0, 0.0};
+float armRotations[] = {15.0, 145.0, 0.0};
 int currentIndex = 0;
 
 /*---------------------------------------------------------------------------*/
@@ -221,7 +221,11 @@ void armRotationControl(float target){
     if (counter++ % 10 == 0){
       // printf("Rotation: %f, error: %f, speed: %f\n", position, error, speed);
     }
+    // drive
+      int LeftJoystick = Controller1.Axis3.position(pct);
+      int RightJoystick = Controller1.Axis2.position(pct);
 
+      time_drive(LeftJoystick, RightJoystick, 10);
   }
     ladybrown.stop(brake);
   ladybrown2.stop(brake);
@@ -362,7 +366,7 @@ void usercontrol(void){
 
       // lady brown
       // rotation1.setPosition(0, deg);
-      if(Controller1.ButtonX.pressing() && !lastButtonPress){
+      if(Controller1.ButtonB.pressing() && !lastButtonPress){
         printf("x is pressed %d %f \n", currentIndex, armRotations[currentIndex]);
         armRotationControl(armRotations[currentIndex]);
         currentIndex++;
