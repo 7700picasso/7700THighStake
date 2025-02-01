@@ -376,7 +376,7 @@ void usercontrol(void){
         // armRotationControl(armRotations[currentIndex]);
         // currentIndex++;
       }
-      lastButtonPress = Controller1.ButtonX.pressing();
+      lastButtonPress = Controller1.ButtonB.pressing();
 
 
         // delete comments up to here

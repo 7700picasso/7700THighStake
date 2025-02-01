@@ -247,6 +247,7 @@ void armRotationControl(float target){
 void pre_auton(void) {
   // Initializing Robot Configuration. DO NOT REMOVE!
 	Brain.Screen.printAt(1, 40, "pre auton is running");
+  rotation1.setPosition(0, deg);
 	drawGUI();
 	Brain.Screen.pressed(selectAuton);
   // All activities that occur before the competition starts
@@ -412,10 +413,11 @@ void usercontrol(void){
         if(currentIndex >= sizeof(armRotations) / sizeof(armRotations[0])){
           currentIndex = 0;
         }
+        
         // armRotationControl(armRotations[currentIndex]);
         // currentIndex++;
       }
-      lastButtonPress = Controller1.ButtonX.pressing();
+      lastButtonPress = Controller1.ButtonB.pressing();
 
       /*if(Controller1.ButtonB.pressing()){
         ladybrown.spin(fwd, 100, pct);
@@ -441,7 +443,6 @@ void usercontrol(void){
 //
 int main(){
   // Set up callbacks for autonomous and driver control periods.
-  rotation1.resetPosition();
   Competition.autonomous(autonomous);
   Competition.drivercontrol(usercontrol);
 
