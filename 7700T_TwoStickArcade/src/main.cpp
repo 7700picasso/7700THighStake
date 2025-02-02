@@ -31,14 +31,14 @@ motor ladybrown2 = motor(PORT8, ratio18_1, false);
 digital_out clamp1(Brain.ThreeWirePort.A);
 digital_out doinker1(Brain.ThreeWirePort.B);
 inertial Gyro1 = inertial(PORT13);
-rotation rotation1 = rotation(PORT17);
+rotation rotation1 = rotation(PORT17, true);
 float armRotations[] = {15.0, 145.0, 0.0};
 int currentIndex = 0;
 
 /*---------------------------------------------------------------------------*/
 /*                          Pre-Autonomous Functions                         */
 
-// Auton Selector (GUI)
+// Auton Selector (GUI)                                 QTR
 int AutonSelected = 0;
 int AutonMin = 0;
 int AutonMax = 4;
@@ -234,9 +234,9 @@ void armRotationControl(float target){
     }
     // drive
       int LeftJoystick = Controller1.Axis3.position(pct);
-      int RightJoystick = Controller1.Axis2.position(pct);
+      int RightJoystick = Controller1.Axis1.position(pct);
 
-      time_drive(LeftJoystick, RightJoystick, 10);
+      time_drive(LeftJoystick + RightJoystick, LeftJoystick - RightJoystick, 10);
   }
     ladybrown.stop(brake);
   ladybrown2.stop(brake);
@@ -247,7 +247,7 @@ void armRotationControl(float target){
 void pre_auton(void) {
   // Initializing Robot Configuration. DO NOT REMOVE!
 	Brain.Screen.printAt(1, 40, "pre auton is running");
-  rotation1.setPosition(0, deg);
+  rotation1.resetPosition();
 	drawGUI();
 	Brain.Screen.pressed(selectAuton);
   // All activities that occur before the competition starts

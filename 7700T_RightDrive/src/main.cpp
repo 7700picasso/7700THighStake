@@ -157,7 +157,6 @@ void GyroTurn(float target){
 void pre_auton(void) {
 Gyro1.calibrate();
 
-
   // All activities that occur before the competition starts
   // Example: clearing encoders, setting servo positions, ...
   while(Gyro1.isCalibrating()){
@@ -219,7 +218,6 @@ void autonomous(void) {
   GyroTurn(180);
   PinchDrive(40);*/
   
-
 }
 
   // ..........................................................................
