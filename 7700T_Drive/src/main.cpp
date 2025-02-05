@@ -33,11 +33,64 @@ digital_out doinker1(Brain.ThreeWirePort.B);
 inertial Gyro1 = inertial(PORT13);
 rotation rotation1 = rotation(PORT17, true);
 
-float armRotations[] = {0.0, -10.0, -90.0};
+float armRotations[] = {15.0, 145.0, 0.0};
 int currentIndex = 0;
 
 /*---------------------------------------------------------------------------*/
 /*                          Pre-Autonomous Functions                         */
+
+// Auton Selector (GUI)
+int AutonSelected = 0;
+int AutonMin = 0;
+int AutonMax = 4;
+
+void drawGUI(){
+	// Draws 2 buttons to be used for selecting auto
+	Brain.Screen.clearScreen();
+	Brain.Screen.printAt(1, 40, "Select Auton then Press Go");
+	Brain.Screen.printAt(1, 200, "Auton Selected =  %d   ", AutonSelected);
+	Brain.Screen.setFillColor(red);
+	Brain.Screen.drawRectangle(20, 50, 100, 100);
+	Brain.Screen.drawCircle(300, 75, 25);
+	Brain.Screen.printAt(25, 75, "Select");
+	Brain.Screen.setFillColor(green);
+	Brain.Screen.drawRectangle(170, 50, 100, 100);
+	Brain.Screen.printAt(175, 75, "GO");
+	Brain.Screen.setFillColor(black);
+}
+
+void selectAuton() {
+		bool selectingAuton = true;
+		
+		int x = Brain.Screen.xPosition(); // get the x position of last touch of the screen
+		int y = Brain.Screen.yPosition(); // get the y position of last touch of the screen
+		
+		// check to see if buttons were pressed
+		if (x >= 20 && x <= 120 && y >= 50 && y <= 150){ // select button pressed
+      AutonSelected++;
+      if (AutonSelected > AutonMax){
+        AutonSelected = AutonMin; // rollover
+      }
+      Brain.Screen.printAt(1, 200, "Auton Selected =  %d   ", AutonSelected);
+		}
+		
+		
+		if (x >= 170 && x <= 270 && y >= 50 && y <= 150) {
+				selectingAuton = false; // GO button pressed
+				Brain.Screen.printAt(1, 200, "Auton  =  %d   GO           ", AutonSelected);
+		}
+		
+		if (!selectingAuton) {
+				Brain.Screen.setFillColor(green);
+				Brain.Screen.drawCircle(300, 75, 25);
+		} else {
+				Brain.Screen.setFillColor(red);
+				Brain.Screen.drawCircle(300, 75, 25);
+		}
+		
+		wait(10, msec); // slow it down
+		Brain.Screen.setFillColor(black);
+}
 
 // Auton Selector (GUI)
 int AutonSelected = 0;
@@ -139,6 +192,7 @@ void MotorDisplay(double y, double current, double temp){
 }
 
 void display(){
+  Brain.Screen.printAt(10, 150, "Rotation: %0.2f", rotation1.position(deg));
   double LMCurrent = LM.current(amp);
   double LMTemp = LM.temperature(celsius);
   double LBCurrent = LB.current(amp);
@@ -253,6 +307,7 @@ void nextState(){
 }
 
 void ladybrown_turn(){
+printf("im super sigma /n");
   rotation1.resetPosition();
   float kp = 0.5;
   float initial = rotation1.angle(deg);
@@ -266,40 +321,55 @@ void ladybrown_turn(){
       ladybrown.spin(reverse, speed, pct);
       ladybrown2.spin(reverse, speed, pct);
       wait(10, msec);
-      ladybrown.stop(brake);
-      ladybrown2.stop(brake);
+      // ladybrown.stop(brake);
+      // ladybrown2.stop(brake);
       x = rotation1.angle(deg);
       error = ladybrowntarget - x;
       speed = kp*error;
+      printf("Rotation: %3.2f, error: %3.2f, speed: %3.2f\n", x, error, speed);
       }
     ladybrown.stop(brake);
     ladybrown2.stop(brake);
   }*/
 
 void armRotationControl(float target){
-  float position = 0;
-  float accuracy = 0.1; //change if needed
-  float kp = 3.0; //change if needed
-  float error = target;
+  printf("rotation: %f \n", target);
+  // rotation1.setPosition(0, deg);
+  float position = rotation1.position(deg);
+  float accuracy = 1.0; //change if needed
+  float kp = 1.8; //change if needed
+  float error = target - position;
   float speed = 0;
-  rotation1.resetPosition();
+  // rotation1.resetPosition();
+  int counter = 0;
   while(fabs(error) > accuracy){
     position = rotation1.position(deg);
     error = target - position;
     speed = error * kp;
     if(speed > 100) speed = 100;
     if(speed < -100) speed = -100;
-    ladybrown.spin(fwd, speed, pct);
-    ladybrown2.spin(fwd, speed, pct);
+    ladybrown.spin(reverse, speed, pct);
+    ladybrown2.spin(reverse, speed, pct);
+    if (counter++ % 10 == 0){
+      // printf("Rotation: %f, error: %f, speed: %f\n", position, error, speed);
+    }
+    // drive
+      int LeftJoystick = Controller1.Axis3.position(pct);
+      int RightJoystick = Controller1.Axis2.position(pct);
+
+      time_drive(LeftJoystick, RightJoystick, 10);
   }
+    ladybrown.stop(brake);
+  ladybrown2.stop(brake);
 }
 
 /*---------------------------------------------------------------------------*/
 
 void pre_auton(void) {
 Gyro1.calibrate();
-
-
+rotation1.resetPosition();
+Brain.Screen.pressed(selectAuton);
+// rotation1.setPosition(0, deg);
   // All activities that occur before the competition starts
   // Example: clearing encoders, setting servo positions, ...
   while(Gyro1.isCalibrating()){
@@ -348,63 +418,17 @@ mogoUnclamp();
   wait(300, msec);
  PinchDrive(23.5);
   intake.spin(fwd, 0, pct);
-  conveyorBelt.spin(fwd, 0, pct);*/
+  conveyorBelt.spin(fwd, 0, pct);
 /*
   intake.stop(brake);
   conveyorBelt.stop(brake);*/
-  /*wait(300, msec);
+  wait(300, msec);
    GyroTurn(172.5);
    PinchDrive(43);
-  conveyorBelt.spin(fwd, 100, pct);*/
-<<<<<<< HEAD
-
-
-=======
+  conveyorBelt.spin(fwd, 100, pct);
   /*wait(300,msec);
   GyroTurn(130);
   PinchDrive(40);*/
-   switch (AutonSelected) {
-    case 0:
-      //code 0 - left side passive
-      mogoUnclamp();
-      PinchDrive(-30);
-      mogoClamp();
-      wait(250, msec);
-      intake.spin(fwd, 100, pct);
-      conveyorBelt.spin(fwd, 100, pct);
-      wait(1.5, sec);
-      GyroTurn(100);
-      wait(300, msec);
-      PinchDrive(23.5);
-      intake.spin(fwd, 0, pct);
-      conveyorBelt.spin(fwd, 0, pct);
-      wait(300, msec);
-      GyroTurn(172.5);
-      PinchDrive(43);
-      conveyorBelt.spin(fwd, 100, pct);
-      break;
-				
-    case 1:
-      //code 2 - right side passive  mogoUnclamp();
-      mogoUnclamp();
-      PinchDrive(-30);
-      mogoClamp();
-      wait(250, msec);
-      intake.spin(fwd, 100, pct);
-      conveyorBelt.spin(fwd, 100, pct);
-      wait(1.5, sec);
-      GyroTurn(-100);
-      wait(600, msec);
-      PinchDrive(23.5);
-      intake.stop(brake);
-      conveyorBelt.stop(brake);
-      wait(450, msec);
-      GyroTurn(172.5);
-      PinchDrive(43);
-      conveyorBelt.spin(fwd, 100, pct);
-    break;
-  }
->>>>>>> b22f62d5b49b6f85f9f4533c37537498b1b2055f
 
 }
 
@@ -420,14 +444,16 @@ mogoUnclamp();
 /*  You must modify the code to add your own robot specific commands here.   */
 /*---------------------------------------------------------------------------*/
 
+bool lastButtonPress = false;
 void usercontrol(void){
   // User control code here, inside the loop
-  bool lastButtonPress = false;
+  // bool lastButtonPress = false;
+  // rotation1.setPosition(0, deg);
   while (1) {
 
       //drive
       display();
-      Brain.Screen.printAt(10, 211, "Rotation: %0.2f", rotation1.position(deg));
+      Brain.Screen.printAt(10, 150, "Rotation: %0.2f", rotation1.position(deg));
       // drive
       int LeftJoystick = Controller1.Axis3.position(pct);
       int RightJoystick = Controller1.Axis2.position(pct);
@@ -468,14 +494,19 @@ void usercontrol(void){
         }
 
       // lady brown
-      if(Controller1.ButtonX.pressing() && !lastButtonPress){
+      // rotation1.setPosition(0, deg);
+      if(Controller1.ButtonB.pressing() && !lastButtonPress){
+        printf("x is pressed %d %f \n", currentIndex, armRotations[currentIndex]);
+        armRotationControl(armRotations[currentIndex]);
         currentIndex++;
         if(currentIndex >= sizeof(armRotations) / sizeof(armRotations[0])){
           currentIndex = 0;
         }
-        armRotationControl(armRotations[currentIndex]);
+        // armRotationControl(armRotations[currentIndex]);
+        // currentIndex++;
       }
-      lastButtonPress = Controller1.ButtonX.pressing();
+      lastButtonPress = Controller1.ButtonB.pressing();
+
 
         // delete comments up to here
         
@@ -487,9 +518,6 @@ void usercontrol(void){
       }
       */
     
-     /* if(Controller1.ButtonX.PRESSED){
-        nextState();
-        ladybrown_turn(); */
       // lady brown
       /*if(Controller1.ButtonB.pressing()){
         ladybrown.spin(fwd, 100, pct);
@@ -499,43 +527,21 @@ void usercontrol(void){
         ladybrown.spin(reverse, 100, pct);
         ladybrown2.spin(reverse, 100, pct);
       }
-      else if(Controller1.ButtonA.pressing()){
-        rotation1.resetPosition();
-        float angle = rotation1.angle(deg);
-        ladybrown.spinToPosition(10, deg);
-        ladybrown2.spinToPosition(10, deg);
-        float x = rotation1.angle(deg);
-
-       /* while(x > 10){
-          ladybrown.spin
-        }
-      }*/
-     /* else{
+     else{
        ladybrown.stop(brake);
        ladybrown2.stop(brake);
-      }
-      } */
-    
-      /*if(Controller1.ButtonA.pressing()){
-        ladybrown.spinToPosition(10, deg);
-        ladybrown2.spinToPosition(10, deg);
-      }
-      else{
-        ladybrown.stop(brake);
-        ladybrown2.stop(brake);
       }*/
-    
 
     wait(20, msec); // Sleep the task for a short amount of time to
                     // prevent wwasted resources
   }
 }
-
 //
 // Main will set up the competition functions and callbacks.
 //
 int main(){
   // Set up callbacks for autonomous and driver control periods.
+  // rotation1.setPosition(0, deg);
   Competition.autonomous(autonomous);
   Competition.drivercontrol(usercontrol);
 
