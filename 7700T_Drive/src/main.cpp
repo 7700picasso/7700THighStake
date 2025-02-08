@@ -32,8 +32,7 @@ digital_out clamp1(Brain.ThreeWirePort.A);
 digital_out doinker1(Brain.ThreeWirePort.B);
 inertial Gyro1 = inertial(PORT13);
 rotation rotation1 = rotation(PORT17, true);
-
-float armRotations[] = {15.0, 145.0, 0.0};
+float armRotations[] = {15.0, 134.75, 0.0};
 int currentIndex = 0;
 
 /*---------------------------------------------------------------------------*/
@@ -93,7 +92,7 @@ void selectAuton() {
 }
 
 // Auton Selector (GUI)
-int AutonSelected = 0;
+/*int AutonSelected = 0;
 int AutonMin = 0;
 int AutonMax = 1;
 
@@ -143,7 +142,7 @@ void selectAuton() {
 		
 		wait(10, msec); // slow it down
 		Brain.Screen.setFillColor(black);
-}
+}*/
 
 void stopDrive(){
   LB.stop(brake);
