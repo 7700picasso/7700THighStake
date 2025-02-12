@@ -244,11 +244,9 @@ void autonomous(void) {
   wait(300, msec);
   PinchDrive(24);
   intake.stop(brake);
-  conveyorBelt.stop(brake);
   wait(300,msec);
-  GyroTurn(180);
+  GyroTurn(130);
   PinchDrive(40);
-  conveyorBelt.spin(fwd, 100, pct);
 }
 
   // ..........................................................................
@@ -273,9 +271,9 @@ void usercontrol(void){
 
       // drive
       int LeftJoystick = Controller1.Axis3.position(pct);
-      int RightJoystick = Controller1.Axis2.position(pct);
+      int RightJoystick = Controller1.Axis1.position(pct);
 
-      time_drive(LeftJoystick, RightJoystick, 10);
+      time_drive(LeftJoystick + RightJoystick, LeftJoystick - RightJoystick, 10);
 
       // intake & conveyor belt
       if(Controller1.ButtonR1.PRESSED){

@@ -29,6 +29,11 @@ motor conveyorBelt = motor(PORT12, ratio18_1, false);
 digital_out clamp1(Brain.ThreeWirePort.A);
 digital_out doinker1(Brain.ThreeWirePort.B);
 inertial Gyro1 = inertial(PORT13);
+motor ladybrown = motor(PORT4, ratio18_1, true);
+motor ladybrown2 = motor(PORT8, ratio18_1, false);
+rotation rotation1 = rotation(PORT17, true);
+float armRotations[] = {15.0, 134.75, 0.0};
+int currentIndex = 0;
 
 /*---------------------------------------------------------------------------*/
 /*                          Pre-Autonomous Functions                         */
@@ -179,13 +184,38 @@ void PinchDrive2(float target){
   }
 }
 
+void armRotationControl(float target){
+  printf("rotation: %f \n", target);
+  // rotation1.setPosition(0, deg);
+  float position = rotation1.position(deg);
+  float accuracy = 1.0; //change if needed
+  float kp = 1.8; //change if needed
+  float error = target - position;
+  float speed = 0;
+  // rotation1.resetPosition();
+  int counter = 0;
+  while(fabs(error) > accuracy){
+    position = rotation1.position(deg);
+    error = target - position;
+    speed = error * kp;
+    if(speed > 100) speed = 100;
+    if(speed < -100) speed = -100;
+    ladybrown.spin(reverse, speed, pct);
+    ladybrown2.spin(reverse, speed, pct);
+    if (counter++ % 10 == 0){
+      // printf("Rotation: %f, error: %f, speed: %f\n", position, error, speed);
+    }
+  }
+  ladybrown.stop(brake);
+  ladybrown2.stop(brake);
+}
 
 /*---------------------------------------------------------------------------*/
 
 void pre_auton(void) {
 //Gyro1.calibrate();
 
-
+rotation1.setPosition(0, deg);
   // All activities that occur before the competition starts
   // Example: clearing encoders, setting servo positions, ...
   while(Gyro1.isCalibrating()){                                  
@@ -316,14 +346,14 @@ conveyorBelt.spin(fwd, 100, pct);
 //collect two rings from L                                                        
 PinchDrive(-5);
 GyroTurn(120);
-PinchDrive(-8.0);
+PinchDrive(-11.0);
 //collect two rings fqrom L
 mogoUnclamp();
 //put in corner
 
 //second corner
 wait(100,msec);
-PinchDrive(6.0);
+PinchDrive(8.0);
 GyroTurn(-122); //-125
 intake.spin(fwd, 0, pct);
 time_drive(60, 60, 700);
@@ -353,19 +383,54 @@ PinchDrive(-3);
 //collect second L
 GyroTurn(-130);
 time_drive(-60, -60, 400);
+wait(500, msec);
 mogoUnclamp();
+wait(250, msec);
 //go into corner
 
 // 3rd corner
-PinchDrive(40.0);
-GyroTurn(25);
-PinchDrive(20);
-GyroTurn(-30);
-PinchDrive(24);
-wait(100, msec);
+PinchDrive(12);
+GyroTurn(-50);
+PinchDrive(10);
+GyroTurn(-20);
+PinchDrive(40);
+GyroTurn(20);
+PinchDrive(46);
+GyroTurn(90);
+PinchDrive(40); 
+
+
+
+
+// time_drive(-50, -50, 250);
+// GyroTurn(45);
+// PinchDrive(10);
+// wait(100, msec);
+// intake.stop(brake);
+// conveyorBelt.stop(brake);
+// GyroTurn(-45);
+// PinchDrive(10.0);
+// GyroTurn(45);
+// PinchDrive(30);
+// PinchDrive(-90);
+// time_drive(-50, -50, 750);
+// WAS WALLSTAKES
+// armRotationControl(15.0);
+// intake.spin(fwd, 100, pct);
+// conveyorBelt.spin(fwd, 100, pct);
+// wait(500, msec);
+// armRotationControl(134.75);
+
+
+/*PinchDrive(10.0);
+GyroTurn(90);
+PinchDrive(60);
+GyroTurn(-90);
+time_drive(50, 50, 750);*/
+/*wait(100, msec);
 GyroTurn(174);
 PinchDrive(-24);
-mogoClamp();
+mogoClamp();*/
 
 // old one
 // // first corner
