@@ -337,8 +337,8 @@ conveyorBelt.spin(fwd, 100, pct);
 //score preload
 intake.spin(fwd, 100, pct); 
 wait(500, msec);
-time_drive(40,40,1300);
-wait(250, msec);
+time_drive(40,40,400);
+wait(1300, msec);
 time_drive(30,30,400);
 intake.spin(fwd, 100, pct);
 conveyorBelt.spin(fwd, 100, pct);
@@ -346,7 +346,8 @@ conveyorBelt.spin(fwd, 100, pct);
 //collect two rings from L                                                        
 PinchDrive(-5);
 GyroTurn(120);
-PinchDrive(-11.0);
+time_drive(-50, -50, 500);
+wait(250, msec);
 //collect two rings fqrom L
 mogoUnclamp();
 //put in corner
@@ -361,20 +362,19 @@ intake.spin(fwd, 100, pct);
 //get ready to go to clamp second mogo
 PinchDrive(-5);
 GyroTurn(-1.75);
-PinchDrive(-80); // PinchDrive or PinchDrive2
+PinchDrive(-90); // PinchDrive or PinchDrive2
 mogoClamp();
 //clamp onto second mogo
 GyroTurn(174);
 //get ready to collect second
 intake.spin(fwd, 100, pct);
 wait(250, msec);
-time_drive(40,40,1700);
+time_drive(40,40,950);
 // wait(750, msec);
 // get ring inside mogo
 PinchDrive(-5);
-PinchDrive(5);
-time_drive(30,30,600); 
-
+PinchDrive(6);
+time_drive(50,50,400);
 intake.spin(fwd, 100, pct);
 conveyorBelt.spin(fwd, 100, pct);
 PinchDrive(-3);
@@ -382,7 +382,7 @@ PinchDrive(-3);
 //PinchDrive(-8.5);
 //collect second L
 GyroTurn(-130);
-time_drive(-60, -60, 400);
+time_drive(-60, -60, 550);
 wait(500, msec);
 mogoUnclamp();
 wait(250, msec);
@@ -390,14 +390,17 @@ wait(250, msec);
 
 // 3rd corner
 PinchDrive(12);
-GyroTurn(-50);
+GyroTurn(10);
 PinchDrive(10);
-GyroTurn(-20);
-PinchDrive(40);
-GyroTurn(20);
-PinchDrive(46);
-GyroTurn(90);
-PinchDrive(40); 
+GyroTurn(-10);
+time_drive(50, 50, 1300);
+GyroTurn(-45);
+PinchDrive(60);
+GyroTurn(174);
+PinchDrive(-5);
+mogoClamp();
+/*GyroTurn(90);
+PinchDrive(40); */
 
 
 
