@@ -376,11 +376,23 @@ void autonomous(void) {
   wait(200, msec);
   GyroTurn(-87);
   wait(300, msec);
-  time_drive(11, 11, 500);
+  time_drive(11, 11, 525);
   wait(250, msec);
   armRotationControl(134.75);
   wait(250, msec);
   armRotationControl(0);
+  PinchDrive(-8);
+  GyroTurn(46.5);
+  PinchDrive(-29.5);
+  PinchDrive(-7);
+  wait(250, msec);
+  mogoClamp();
+  GyroTurn(-126); 
+  intake.spin(fwd, 100, pct);
+  conveyorBelt.spin(fwd, 100, pct);
+  PinchDrive(20);
+  GyroTurn(174.796);
+  PinchDrive(43);
   //comment
   /*
   PinchDrive(-25);

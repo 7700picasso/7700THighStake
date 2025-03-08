@@ -377,22 +377,44 @@ switch (AutonSelected){
 
 case 1:
   // tune because of the new kp in pinchdrive
-  mogoUnclamp();
-  PinchDrive(-30);
-  mogoClamp();
+  // mogoUnclamp();
+  // PinchDrive(-30);
+  // mogoClamp();
+  // wait(250, msec);
+  // intake.spin(fwd, 100, pct);
+  // conveyorBelt.spin(fwd, 100, pct);
+  // wait(1.5, sec);
+  // GyroTurn(-100);
+  // wait(600, msec);
+  // PinchDrive(23.5);
+  // intake.stop(brake);
+  // conveyorBelt.stop(brake);
+  // wait(450, msec);
+  // GyroTurn(172.5);
+  // PinchDrive(43);
+  // conveyorBelt.spin(fwd, 100, pct);
+    mogoUnclamp();
+  PinchDrive(13.25);
+  wait(200, msec);
+  GyroTurn(-87);
+  wait(300, msec);
+  time_drive(11, 11, 525);
   wait(250, msec);
+  armRotationControl(134.75);
+  wait(250, msec);
+  armRotationControl(0);
+  PinchDrive(-8);
+  GyroTurn(46.5);
+  PinchDrive(-29.5);
+  PinchDrive(-7);
+  wait(250, msec);
+  mogoClamp();
+  GyroTurn(-126); 
   intake.spin(fwd, 100, pct);
   conveyorBelt.spin(fwd, 100, pct);
-  wait(1.5, sec);
-  GyroTurn(-100);
-  wait(600, msec);
-  PinchDrive(23.5);
-  intake.stop(brake);
-  conveyorBelt.stop(brake);
-  wait(450, msec);
-  GyroTurn(172.5);
+  PinchDrive(20);
+  GyroTurn(174.796);
   PinchDrive(43);
-  conveyorBelt.spin(fwd, 100, pct);
   break; 
 
 }
