@@ -336,9 +336,9 @@ conveyorBelt.spin(fwd, 100, pct);
 //score preload
 intake.spin(fwd, 100, pct); 
 wait(500, msec);
-time_drive(40,40,400);
-wait(1300, msec);
-time_drive(30,30,400);
+time_drive(20,20,2575); 
+// wait(1300, msec);
+// time_drive(30,30,400);
 intake.spin(fwd, 100, pct);
 conveyorBelt.spin(fwd, 100, pct);
 // PinchDrive(41);
@@ -347,20 +347,20 @@ PinchDrive(-5);
 GyroTurn(120);
 time_drive(-50, -50, 500);
 wait(250, msec);
-//collect two rings fqrom L
+//collect two rings from L
 mogoUnclamp();
 //put in corner
 
 //second corner
 wait(100,msec);
-PinchDrive(8.0);
+PinchDrive(9.0);
 GyroTurn(-122); //-125
 intake.spin(fwd, 0, pct);
-time_drive(60, 60, 700);
+time_drive(60, 60, 750);
 intake.spin(fwd, 100, pct);
 //get ready to go to clamp second mogo
 PinchDrive(-5);
-GyroTurn(-1.75);
+GyroTurn(-0.9);
 PinchDrive(-90); // PinchDrive or PinchDrive2
 mogoClamp();
 //clamp onto second mogo
@@ -373,26 +373,52 @@ time_drive(25,25,1300);
 // get ring inside mogo
 PinchDrive(-5);
 PinchDrive(6);
-time_drive(50,50,500);
+time_drive(50,50,525);
 intake.spin(fwd, 100, pct);
 conveyorBelt.spin(fwd, 100, pct);
-PinchDrive(-3);
+PinchDrive(-15);
 //PinchDrive(44);  
 //PinchDrive(-8.5);≥≥œ
 //collect second L
-GyroTurn(-130);
-time_drive(-60, -60, 550);
-wait(500, msec);
-mogoUnclamp();                           
+GyroTurn(51);
+/*PinchDrive(15);
+GyroTurn(-37);
+time_drive(-20, -20, 350);
+mogoUnclamp();*/
+
+/*GyroTurn(-130);
+time_drive(-60, -60, 150);
+wait(500, msec);                         
 wait(250, msec);
+GyroTurn(2.5);*/
+
 //go into corner
 
 // 3rd corner
-PinchDrive(12);
+
+// getting 3rd ring
+// time_drive(-50, -50, 150);
+/*GyroTurn(6);
+PinchDrive(10);
+// GyroTurn(5);
+PinchDrive(20); 
+GyroTurn(-10);
+PinchDrive(-10);
+GyroTurn(-10);
+time_drive(-50, -50, 500);
+mogoUnclamp();*/
+//
+
+/*PinchDrive(12);
 GyroTurn(10); 
 PinchDrive(10);
 GyroTurn(10);
 PinchDrive(20);
+// go to other half
+PinchDrive(30);
+GyroTurn(-35);
+PinchDrive(15);
+GyroTurn(160);
 /*GyroTurn(90);
 PinchDrive(40); */
 
